@@ -2,6 +2,10 @@ CREATE DATABASE StarAirlines;
 go
 use StarAirlines;
 
+/* 
+  
+*/
+
 IF (
   NOT EXISTS (
     SELECT
@@ -36,91 +40,91 @@ END -- Pais
 create table
   Flight.Country(
     CountryID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    CountryName varchar(100) not null,
     Location geography,
-    constraint PK_Country_CountryID primary key clustered (CountryID)
+    CONSTRAINT PK_Country_CountryID PRIMARY KEY CLUSTERED (CountryID)
   );
 
 -- Estado Empleado
 create table
   Person.StatusEmployee(
     StatusEmployeeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    StatusEmployeeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_StatusEmployee_StatusEmployeeID primary key clustered (StatusEmployeeID)
+    CONSTRAINT PK_StatusEmployee_StatusEmployeeID PRIMARY KEY CLUSTERED (StatusEmployeeID)
   );
 
 -- Tipo Equipaje
 create table
   Flight.LuggageType(
     LuggageTypeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    LuggageTypeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_LuggageType_LuggageTypeID primary key clustered (LuggageTypeID)
+    CONSTRAINT PK_LuggageType_LuggageTypeID PRIMARY KEY CLUSTERED (LuggageTypeID)
   );
 
 -- Estado Equipaje
 create table
   Flight.StatusLuggage(
     StatusLuggageID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    StatusLuggageName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_StatusLuggage_StatusLuggageID primary key clustered (StatusLuggageID)
+    CONSTRAINT PK_StatusLuggage_StatusLuggageID PRIMARY KEY CLUSTERED (StatusLuggageID)
   );
 
 -- Estado Avion
 create table
   Airport.StatusPlane(
     StatusPlaneID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    StatusPlaneName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_StatusPlane_StatusPlaneID primary key clustered (StatusPlaneID)
+    CONSTRAINT PK_StatusPlane_StatusPlaneID PRIMARY KEY CLUSTERED (StatusPlaneID)
   );
 
 -- Tipo Vuelo
 create table
   Flight.FlightType(
     FlightTypeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    FlightTypeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_FlightType_FlightTypeID primary key clustered (FlightTypeID)
+    CONSTRAINT PK_FlightType_FlightTypeID PRIMARY KEY CLUSTERED (FlightTypeID)
   );
 
 -- Beneficios Vuelo
 create table
   Flight.FlightBenefit(
     FlightBenefitID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    FlightBenefitName varchar(100) not null,
     Description varchar(200) not null,
     Cost money not null,
-    constraint PK_FlightBenefit_FlightBenefitID primary key clustered (FlightBenefitID)
+    CONSTRAINT PK_FlightBenefit_FlightBenefitID PRIMARY KEY CLUSTERED (FlightBenefitID)
   );
 
 -- Tipo Sangre
 create table
   Person.BloodType(
     BloodTypeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    BloodTypeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_BloodType_BloodTypeID primary key clustered (BloodTypeID)
+    CONSTRAINT PK_BloodType_BloodTypeID PRIMARY KEY CLUSTERED (BloodTypeID)
   );
 
 -- Rol Empleado
 create table
   Person.EmployeeRole(
     EmployeeRoleID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    EmployeeRoleName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_EmployeeRole_EmployeeRoleID primary key clustered (EmployeeRoleID)
+    CONSTRAINT PK_EmployeeRole_EmployeeRoleID PRIMARY KEY CLUSTERED (EmployeeRoleID)
   );
 
 -- Tipo Documento
 create table
   Person.DocumentType(
     DocumentTypeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    DocumentTypeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_DocumentType_DocumentTypeID primary key clustered (DocumentTypeID)
+    CONSTRAINT PK_DocumentType_DocumentTypeID PRIMARY KEY CLUSTERED (DocumentTypeID)
   );
 
 -- Ciudades / Destinos
@@ -128,10 +132,10 @@ create table
   Flight.Destination(
     DestinationID int identity(1, 1) not null,
     CountryID int not null,
-    Name varchar(100) not null,
+    DestinationName varchar(100) not null,
     Acronym varchar(4) not null,
     Location geography,
-    constraint PK_Destination_DestinationID primary key clustered (DestinationID),
+    CONSTRAINT PK_Destination_DestinationID PRIMARY KEY CLUSTERED (DestinationID),
     CONSTRAINT FK_Destination_Ref_Country FOREIGN KEY (CountryID) REFERENCES Flight.Country (CountryID) ON DELETE CASCADE ON UPDATE CASCADE
   );
 
@@ -139,30 +143,41 @@ create table
 create table
   Airport.AirportType(
     AirportTypeID int identity(1, 1) not null,
-    Name varchar(100) not null,
+    AirportTypeName varchar(100) not null,
     Description varchar(200) not null,
-    constraint PK_AirportType_AirportTypeID primary key clustered (AirportTypeID)
+    CONSTRAINT PK_AirportType_AirportTypeID PRIMARY KEY CLUSTERED (AirportTypeID)
   );
 
 -- Marca
 create table
   Airport.Brand(
     BrandID int identity(1, 1) not null,
-    Name varchar(100) unique not null,
+    BrandName varchar(100) unique not null,
     Description varchar(200) not null,
     Email varchar(100) not null,
-    constraint PK_Brand_BrandID primary key clustered (BrandID)
+    CONSTRAINT PK_Brand_BrandID PRIMARY KEY CLUSTERED (BrandID)
+  );
+
+-- Modelo
+create table
+  Airport.Model(
+    ModelID int identity(1,1) not null,
+    ModelName varchar(100) not null,
+    Description varchar(250),
+    BrandID int not null,
+    CONSTRAINT PK_Model_ModelID PRIMARY KEY (ModelID),
+    CONSTRAINT FK_Model_Ref_Brand FOREIGN KEY (BrandID) REFERENCES Airport.Brand (BrandID) ON DELETE NO ACTION ON UPDATE CASCADE,
   );
 
 -- Tipo Ticket
 create table
   Flight.TicketType(
     TicketTypeID int identity(1, 1) not null,
-    Name varchar(100) unique not null,
+    TycketTypeName varchar(100) unique not null,
     Description varchar(200) not null,
     Cost money not null,
     FreeWeight int not null,
-    constraint PK_TicketType_TicketTypeID primary key clustered (TicketTypeID)
+    CONSTRAINT PK_TicketType_TicketTypeID PRIMARY KEY CLUSTERED (TicketTypeID)
   );
 
 -- Persona
@@ -181,7 +196,7 @@ create table
     BloodType int not null,
     Direction varchar(250),
     Email varchar(100) not null,
-    constraint PK_Person_PersonID primary key clustered (PersonID),
+    CONSTRAINT PK_Person_PersonID PRIMARY KEY CLUSTERED (PersonID),
     CONSTRAINT FK_Person_Ref_Country FOREIGN KEY (Nationality) REFERENCES Flight.Country (CountryID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Person_Ref_DocumentType FOREIGN KEY (DocumentTypeID) REFERENCES Person.DocumentType (DocumentTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Person_Ref_BloodType FOREIGN KEY (BloodType) REFERENCES Person.BloodType (BloodTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -191,11 +206,11 @@ create table
 create table
   Airport.Airport(
     AirportID int identity(1, 1) not null,
-    Name varchar(200) not null,
+    AirportName varchar(200) not null,
     DestinationID int not null,
     Direction varchar(250),
     AirportTypeID int not null,
-    constraint PK_Airport_AirportID primary key clustered (AirportID),
+    CONSTRAINT PK_Airport_AirportID PRIMARY KEY CLUSTERED (AirportID),
     CONSTRAINT FK_Airport_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Flight.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Airport_Ref_AirportType FOREIGN KEY (AirportTypeID) REFERENCES Airport.AirportType (AirportTypeID) ON DELETE NO ACTION ON UPDATE CASCADE
   );
@@ -212,7 +227,7 @@ create table
     FlightCost int not null,
     TravelDuration time not null,
     FlightTypeID int not null,
-    constraint PK_Flight_Ref_FlightID primary key clustered (FlightID),
+    CONSTRAINT PK_Flight_Ref_FlightID PRIMARY KEY CLUSTERED (FlightID),
     CONSTRAINT FK_Flight_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Flight.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Flight_Ref_Airport FOREIGN KEY (DestinationAirportID) REFERENCES Airport.Airport (AirportID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Flight_Ref_FlightType FOREIGN KEY (FlightTypeID) REFERENCES Flight.FlightType (FlightTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -222,8 +237,7 @@ create table
 create table
   Airport.Plane(
     PlaneID int identity(1, 1) not null,
-    BrandID int not null,
-    Model varchar(50) not null,
+    ModelID int not null,
     SeatingCapacity int not null,
     StatusPlaneID int not null,
     AdmissionDate date not null,
@@ -233,8 +247,8 @@ create table
     SeatingCapacityLow int not null,
     BelongingAirport int not null,
     -- AirportID
-    constraint PK_Plane_PlaneID primary key clustered (PlaneID),
-    CONSTRAINT FK_Plane_Ref_Brand FOREIGN KEY (BrandID) REFERENCES Airport.Brand (BrandID) ON DELETE NO ACTION ON UPDATE CASCADE,
+    CONSTRAINT PK_Plane_PlaneID PRIMARY KEY CLUSTERED (PlaneID),
+    CONSTRAINT FK_Plane_Ref_Model FOREIGN KEY (ModelID) REFERENCES Airport.Model (ModelID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Plane_Ref_StatusPlane FOREIGN KEY (StatusPlaneID) REFERENCES Airport.StatusPlane (StatusPlaneID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Plane_Ref_Airport FOREIGN KEY (BelongingAirport) REFERENCES Airport.Airport (AirportID) ON DELETE NO ACTION ON UPDATE NO ACTION
   );
@@ -254,7 +268,7 @@ create table
     MediumSeatsAvailable int not null,
     LowSeatsAvailable int not null,
     HighSeatsAvailable int not null,
-    constraint PK_FlightSchedule_FlightScheduleID primary key clustered (FlightScheduleID),
+    CONSTRAINT PK_FlightSchedule_FlightScheduleID PRIMARY KEY CLUSTERED (FlightScheduleID),
     CONSTRAINT FK_FlightSchedule_Ref_Plane FOREIGN KEY (PlaneID) REFERENCES Airport.Plane (PlaneID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_FlightSchedule_Ref_Person_Pilot FOREIGN KEY (Pilot) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_FlightSchedule_Ref_Person_Copilot FOREIGN KEY (CoPilot) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -271,7 +285,7 @@ create table
     Cost money not null,
     LuggageTypeID int not null,
     LuggageStatusID int not null,
-    constraint PK_Luggage_LuggageID primary key clustered (LuggageID),
+    CONSTRAINT PK_Luggage_LuggageID PRIMARY KEY CLUSTERED (LuggageID),
     CONSTRAINT FK_Luggage_Ref_Person FOREIGN KEY (PersonID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Luggage_Ref_FlightSchedule FOREIGN KEY (FlightScheduleID) REFERENCES Flight.FlightSchedule (FlightScheduleID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Luggage_Ref_LuggageType FOREIGN KEY (LuggageTypeID) REFERENCES Flight.LuggageType (LuggageTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -288,7 +302,7 @@ create table
     Cost money not null,
     FlightScheduleID int not null,
     SeatPlane varchar(7) not null,
-    constraint PK_Ticket_TicketID primary key clustered (TicketID),
+    CONSTRAINT PK_Ticket_TicketID PRIMARY KEY CLUSTERED (TicketID),
     CONSTRAINT FK_Ticket_Ref_Person FOREIGN KEY (PersonID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Ticket_Ref_Flight FOREIGN KEY (FlightID) REFERENCES Flight.Flight (FlightID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Ticket_Ref_TicketType FOREIGN KEY (TicketTypeID) REFERENCES Flight.TicketType (TicketTypeID) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -302,7 +316,7 @@ create table
     FlightBenefitID int not null,
     FlightTypeID int not null,
     Cost money not null,
-    CONSTRAINT PK_FlightBenefit_FlightType PRIMARY KEY (FlightBenefitID, FlightTypeID),
+    CONSTRAINT PK_FlightBenefit_FlightType PRIMARY KEY CLUSTERED (FlightBenefitID, FlightTypeID),
     CONSTRAINT FK_FlightBenefit_FlightType_Ref_FlightBenefit FOREIGN KEY (FlightBenefitID) REFERENCES Flight.FlightBenefit (FlightBenefitID) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT FK_FlightBenefit_FlightType_Ref_FlightType FOREIGN KEY (FlightTypeID) REFERENCES Flight.FlightType (FlightTypeID) ON DELETE CASCADE ON UPDATE CASCADE
   );
@@ -313,9 +327,9 @@ create table
     EmployeeRoleID int not null,
     StartDate date not null,
     EndDate date,
-    Description varchar,
-    constraint FK_Employee_EmployeeRole_Ref_Person foreign key (EmployeeID) references Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    constraint FK_Employee_EmployeeRole_Ref_EmployeeRole foreign key (EmployeeRoleID) references Person.EmployeeRole (EmployeeRoleID) ON DELETE NO ACTION ON UPDATE NO ACTION
+    Description varchar(100),
+    CONSTRAINT FK_Employee_EmployeeRole_Ref_Person FOREIGN KEY (EmployeeID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_Employee_EmployeeRole_Ref_EmployeeRole FOREIGN KEY (EmployeeRoleID) REFERENCES Person.EmployeeRole (EmployeeRoleID) ON DELETE NO ACTION ON UPDATE NO ACTION
   );
 
 create table
@@ -324,7 +338,7 @@ create table
     StatusEmployeeID int not null,
     StartDate date not null,
     EndDate date,
-    Description varchar,
-    constraint FK_Employee_StatusEmployee_Ref_Person foreign key (EmployeeID) references Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    constraint FK_Employee_StatusEmployee_Ref_StatusEmployee foreign key (StatusEmployeeID) references Person.StatusEmployee (StatusEmployeeID) ON DELETE NO ACTION ON UPDATE NO ACTION
+    Description varchar(100),
+    CONSTRAINT FK_Employee_StatusEmployee_Ref_Person FOREIGN KEY (EmployeeID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_Employee_StatusEmployee_Ref_StatusEmployee FOREIGN KEY (StatusEmployeeID) REFERENCES Person.StatusEmployee (StatusEmployeeID) ON DELETE NO ACTION ON UPDATE NO ACTION
   );
