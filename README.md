@@ -1,1 +1,1 @@
-# star-airlines
+# Star Airlines
