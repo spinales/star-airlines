@@ -38,6 +38,12 @@ END IF (
 ) BEGIN EXEC ('CREATE SCHEMA [Airport] AUTHORIZATION [dbo]')
 END
 
+-- Statistics
+Alter DATABASE StarAirlines SET auto_create_statistics ON
+GO
+ALTER DATABASE StarAirlines SET auto_update_statistics ON
+GO
+
 -- Pais
 create table
   Flight.Country(
