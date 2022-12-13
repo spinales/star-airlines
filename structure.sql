@@ -42,12 +42,15 @@ END
 create table
   Flight.Country(
     CountryID int identity(1, 1) not null,
-    ISO	CHAR(2) not null,
-    Location geography,
+    ISO2 CHAR(2) not null,
+    ISO3 CHAR(3) not null,
+    CurrencyName varchar(100) not null,
+    Latitude NUMERIC(10,8) not null,
+    Longitude NUMERIC(11,8) not null,
     CountryName varchar(100) not null,
     CONSTRAINT PK_Country_CountryID PRIMARY KEY CLUSTERED (CountryID),
-    CONSTRAINT AK_ISO UNIQUE(ISO),
-    CONSTRAINT AK_Location UNIQUE(Location),
+    CONSTRAINT AK_ISO2 UNIQUE(ISO2),
+    CONSTRAINT AK_ISO3 UNIQUE(ISO3),
     CONSTRAINT AK_CountryName UNIQUE(CountryName)
   );
 
@@ -116,7 +119,7 @@ create table
 create table
   Person.BloodType(
     BloodTypeID int identity(1, 1) not null,
-    BloodTypeName varchar(100) not null,
+    BloodTypeName varchar(4) not null,
     Description varchar(200) not null,
     CONSTRAINT PK_BloodType_BloodTypeID PRIMARY KEY CLUSTERED (BloodTypeID),
     CONSTRAINT AK_BloodTypeName UNIQUE(BloodTypeName)
@@ -148,12 +151,12 @@ create table
     DestinationID int identity(1, 1) not null,
     CountryID int not null,
     DestinationName varchar(100) not null,
-    Acronym varchar(4) not null,
-    Location geography,
+    Acronym varchar(4) null,
+    Latitude NUMERIC(10,8) null,
+    Longitude NUMERIC(11,8) null,
     CONSTRAINT PK_Destination_DestinationID PRIMARY KEY CLUSTERED (DestinationID),
     CONSTRAINT FK_Destination_Ref_Country FOREIGN KEY (CountryID) REFERENCES Flight.Country (CountryID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT AK_DestinationName UNIQUE(DestinationName),
-    CONSTRAINT AK_Acronym UNIQUE(Acronym)
+    CONSTRAINT AK_DestinationName UNIQUE(DestinationName)
   );
 
 -- Tipo de aeropuerto
@@ -194,23 +197,25 @@ create table
 create table
   Flight.TicketType(
     TicketTypeID int identity(1, 1) not null,
-    TycketTypeName varchar(100) unique not null,
+    TicketTypeName varchar(100) unique not null,
     Description varchar(200) not null,
     Cost money not null,
     FreeWeight int not null,
+    Acronym char(4) not null,
     CONSTRAINT PK_TicketType_TicketTypeID PRIMARY KEY CLUSTERED (TicketTypeID),
-    CONSTRAINT AK_TycketTypeName UNIQUE(TycketTypeName)
+    CONSTRAINT AK_TicketTypeName UNIQUE(TicketTypeName),
+    CONSTRAINT AK_TicketType_Acronym UNIQUE(Acronym)
   );
 
 -- Persona
 create table
   Person.Person(
     PersonID int identity(1, 1) not null,
-    FirstName varchar(50) not null,
-    LastName varchar(50) not null,
+    FirstName varchar(100) not null,
+    LastName varchar(100) not null,
     AdmissionDate date not null,
     Nationality int not null,
-    Gender char(1) not null,
+    Gender char(1) not null check(Gender in('M','F')),
     Document varchar(20) not null,
     DocumentTypeID int not null,
     PhoneNumber varchar(15) not null,
@@ -269,7 +274,7 @@ create table
     SeatingCapacityHigh int not null,
     SeatingCapacityMedium int not null,
     SeatingCapacityLow int not null,
-    BelongingAirport int not null,
+    BelongingAirport int,
     -- AirportID
     CONSTRAINT PK_Plane_PlaneID PRIMARY KEY CLUSTERED (PlaneID),
     CONSTRAINT FK_Plane_Ref_Model FOREIGN KEY (ModelID) REFERENCES Airport.Model (ModelID) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -289,9 +294,9 @@ create table
     CoPilot int not null,
     -- EmplooyeeID
     FlightID int not null,
-    MediumSeatsAvailable int not null,
-    LowSeatsAvailable int not null,
-    HighSeatsAvailable int not null,
+    -- MediumSeatsAvailable int not null,
+    -- LowSeatsAvailable int not null,
+    -- HighSeatsAvailable int not null,
     CONSTRAINT PK_FlightSchedule_FlightScheduleID PRIMARY KEY CLUSTERED (FlightScheduleID),
     CONSTRAINT FK_FlightSchedule_Ref_Plane FOREIGN KEY (PlaneID) REFERENCES Airport.Plane (PlaneID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_FlightSchedule_Ref_Person_Pilot FOREIGN KEY (Pilot) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -339,7 +344,7 @@ create table
   Flight.FlightBenefit_FlightType(
     FlightBenefitID int not null,
     FlightTypeID int not null,
-    Cost money not null,
+    -- Cost money not null,
     CONSTRAINT PK_FlightBenefit_FlightType PRIMARY KEY CLUSTERED (FlightBenefitID, FlightTypeID),
     CONSTRAINT FK_FlightBenefit_FlightType_Ref_FlightBenefit FOREIGN KEY (FlightBenefitID) REFERENCES Flight.FlightBenefit (FlightBenefitID) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT FK_FlightBenefit_FlightType_Ref_FlightType FOREIGN KEY (FlightTypeID) REFERENCES Flight.FlightType (FlightTypeID) ON DELETE CASCADE ON UPDATE CASCADE
