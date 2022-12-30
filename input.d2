@@ -1,0 +1,215 @@
+Flight.Destination.CountryID -> Flight.Country.CountryID
+
+Flight: {
+
+    Flight: {
+    	shape: sql_table      
+		FlightID: int {constraint: primary_key}
+		DestinationID: int {constraint: foreign_key}
+		DestinationAirportID: int {constraint: foreign_key}
+		TravelDistance: int 
+		FlightCost: int
+		TravelDuration: time
+		FlightTypeID: int {constraint: foreign_key}
+  	}
+	
+	Country: {
+		shape: sql_table      
+		CountryID: int {constraint: primary_key}
+		ISO2: char(2) {constraint: unique}
+		ISO3: CHAR(3) {constraint: unique}
+		CurrencyName: varchar(100)
+		Latitude: NUMERIC(10,8)
+		Longitude: NUMERIC(11,8)
+		CountryName: varchar(100) {constraint: unique}
+	}
+	Destination: {
+		shape: sql_table      
+		DestinationID: int {constraint: primary_key}
+		CountryID: int {constraint: foreign_key}
+		DestinationName: varchar(100) {constraint: unique}
+		Acronym: varchar(4) {constraint: unique}
+		Latitude: NUMERIC(10,8)
+		Longitude: NUMERIC(11,8)
+	}
+	FlightBenefit: {
+		shape: sql_table      
+		FlightBenefitID: int {constraint: primary_key}
+    	FlightBenefitName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+    	Cost: money
+	}
+	FlightBenefit_FlightType: {
+		shape: sql_table      
+		FlightBenefitID: int {constraint: primary_key}
+    	FlightTypeID: int {constraint: primary_key}
+	}
+	FlightSchedule: {
+		shape: sql_table      
+		FlightScheduleID: int {constraint: primary_key}
+		DepartureDate: datetime
+		ArrivalDate: datetime
+		PlaneID: int {constraint: foreign_key}
+		Pilot: int {constraint: foreign_key}
+		CoPilot: int {constraint: foreign_key}
+		FlightID: int {constraint: foreign_key}
+	}
+	FlightType: {
+		shape: sql_table      
+		FlightTypeID: int {constraint: primary_key}
+    	FlightTypeName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+	Luggage: {
+		shape: sql_table      
+		LuggageID: int {constraint: primary_key}
+		PersonID: int {constraint: foreign_key}
+		FlightScheduleID: int {constraint: foreign_key}
+		Weight: int
+		Cost: money
+		LuggageTypeID: int {constraint: foreign_key}
+		LuggageStatusID: int {constraint: foreign_key}
+	}
+
+	LuggageType: {
+		shape: sql_table      
+		LuggageTypeID: int {constraint: primary_key}
+    	LuggageTypeName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+	StatusLuggage: {
+		shape: sql_table      
+		StatusLuggageID: int {constraint: primary_key}
+    	StatusLuggageName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+	Ticket: {
+		shape: sql_table      
+		TicketID: int {constraint: primary_key}
+		FlightID: int {constraint: foreign_key}
+		PersonID: int {constraint: foreign_key}
+		TicketTypeID: int {constraint: foreign_key}
+		Cost: money
+		FlightScheduleID: int {constraint: foreign_key}
+		SeatPlane: varchar(7)
+	}
+	TicketType: {
+		shape: sql_table      
+		TicketTypeID: int {constraint: primary_key}
+    	TicketTypeName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+    	Cost: money
+    	FreeWeight: int 
+    	Acronym: char(4) {constraint: unique}
+	}
+}
+
+Airport: {
+	Airport: {
+		shape: sql_table
+		AirportID: int {constraint: primary_key}
+    	AirportName: varchar(200) {constraint: unique}
+    	DestinationID: int {constraint: foreign_key}
+    	AirportDirection: varchar(250)
+    	AirportTypeID: int {constraint: foreign_key}
+	}
+	AirportType: {
+		shape: sql_table
+		AirportTypeID: int {constraint: primary_key}
+    	AirportTypeName: varchar(100) {constraint: unique}
+    	Description: varchar(200) 
+	}
+	Brand: {
+		shape: sql_table      
+		BrandID: int {constraint: primary_key}
+    	BrandName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+    	Email: varchar(100) {constraint: unique}
+	}
+	Model: {
+		shape: sql_table      
+		ModelID: int {constraint: primary_key}
+		ModelName: varchar(100) {constraint: foreign_key}
+		Description: varchar(250)
+		BrandID: int
+	}
+	Plane: {
+		shape: sql_table      
+		PlaneID: int {constraint: primary_key}
+		ModelID: int {constraint: foreign_key}
+		SeatingCapacity: int
+		StatusPlaneID: int {constraint: foreign_key}
+		AdmissionDate: date
+		RetirementDate: date
+		SeatingCapacityHigh: int
+		SeatingCapacityMedium: int
+		SeatingCapacityLow: int
+		BelongingAirport: int {constraint: foreign_key}
+	}
+	StatusPlane: {
+		shape: sql_table      
+		StatusPlaneID: int {constraint: primary_key}
+    	StatusPlaneName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+
+}
+
+Person: {
+	BloodType: {
+		shape: sql_table      
+		BloodTypeID: int {constraint: primary_key}
+    	BloodTypeName: varchar(4) {constraint: unique}
+    	Description: varchar(200)
+	}
+	DocumentType: {
+		shape: sql_table      
+		DocumentTypeID: int {constraint: primary_key}
+    	DocumentTypeName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+	Employee_EmployeeRole: {
+		shape: sql_table      
+		EmployeeID: int {constraint: primary_key}
+    	EmployeeRoleID: int {constraint: primary_key}
+    	StartDate: date
+    	EndDate: date
+    	Description: varchar(100)
+	}
+	Employee_StatusEmployee: {
+		shape: sql_table      
+		EmployeeID: int {constraint: primary_key}
+    	StatusEmployeeID: int {constraint: primary_key}
+    	StartDate: date
+    	EndDate: date
+    	Description: varchar(100)
+	}
+	EmployeeRole: {
+		shape: sql_table      
+		EmployeeRoleID: int {constraint: primary_key}
+    	EmployeeRoleName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+	Person: {
+		shape: sql_table      
+		PersonID: int {constraint: primary_key}
+		FirstName: varchar(100)
+		LastName: varchar(100)
+		AdmissionDate: date
+		Nationality: int
+    	Gender: char(1)
+    	Document: varchar(20) {constraint: unique}
+    	DocumentTypeID: int
+    	PhoneNumber: varchar(15)
+    	DOB: date
+    	BloodType: int 
+    	PersonDirection: varchar(250)
+    	Email: varchar(100)
+	}
+	StatusEmployee: {
+		shape: sql_table      
+		StatusEmployeeID: int {constraint: primary_key}
+    	StatusEmployeeName: varchar(100) {constraint: unique}
+    	Description: varchar(200)
+	}
+}
