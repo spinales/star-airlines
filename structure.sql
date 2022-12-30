@@ -76,6 +76,7 @@ create table
     LuggageTypeID int identity(1, 1) not null,
     LuggageTypeName varchar(100) not null,
     Description varchar(200) not null,
+    Cost money not null,
     CONSTRAINT PK_LuggageType_LuggageTypeID PRIMARY KEY CLUSTERED (LuggageTypeID),
     CONSTRAINT AK_LuggageTypeName UNIQUE(LuggageTypeName)
   );
@@ -179,7 +180,7 @@ create table
 create table
   Airport.Brand(
     BrandID int identity(1, 1) not null,
-    BrandName varchar(100) unique not null,
+    BrandName varchar(100) not null,
     Description varchar(200) not null,
     Email varchar(100) not null,
     CONSTRAINT PK_Brand_BrandID PRIMARY KEY CLUSTERED (BrandID),
@@ -203,7 +204,7 @@ create table
 create table
   Flight.TicketType(
     TicketTypeID int identity(1, 1) not null,
-    TicketTypeName varchar(100) unique not null,
+    TicketTypeName varchar(100) not null,
     Description varchar(200) not null,
     Cost money not null,
     FreeWeight int not null,
