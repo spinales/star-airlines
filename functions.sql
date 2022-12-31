@@ -1,8 +1,8 @@
 /*
-funciones
+Functions
 */
 
-DROP function if exists Flight.ufnCalculateNumberOfRemainingAvailableSeats;
+DROP function IF EXISTS Flight.ufnCalculateNumberOfRemainingAvailableSeats;
 GO
 CREATE FUNCTION Flight.ufnCalculateNumberOfRemainingAvailableSeats (@FlightScheduleID int)
 RETURNS int
@@ -10,7 +10,7 @@ AS
 BEGIN
     DECLARE @PlaneID int;
     DECLARE @SeatingCapacity int;
-    DECLARE @SeatingOcupped int;
+    DECLARE @SeatingOccupied int;
     DECLARE @result int;
 
     SELECT @PlaneID = FlightSchedule.PlaneID
@@ -21,18 +21,18 @@ BEGIN
     FROM Airport.Plane
     WHERE Plane.PlaneID = @PlaneID;
 
-    Select @SeatingOcupped = COUNT(*)
+    Select @SeatingOccupied = COUNT(*)
     FROM Flight.Ticket
     WHERE Ticket.FlightScheduleID = @FlightScheduleID;
 
-    SET @result = @SeatingCapacity - @SeatingOcupped;
+    SET @result = @SeatingCapacity - @SeatingOccupied;
     RETURN @result;
 END;
 GO
 
-DROP function if exists Flight.ufnValidateSeatIfAvalidable;
+DROP function IF EXISTS Flight.ufnValidateSeatIfAvailable;
 GO
-CREATE FUNCTION Flight.ufnValidateSeatIfAvalidable (@FlightScheduleID int, @SeatPlane varchar(7))
+CREATE FUNCTION Flight.ufnValidateSeatIfAvailable (@FlightScheduleID int, @SeatPlane varchar(7))
 RETURNS bit
 AS
 BEGIN
@@ -50,23 +50,30 @@ BEGIN
 END;
 GO
 
-DROP function if exists Flight.ufnCalculateCostOfLuggage;
+DROP function IF EXISTS Flight.ufnCalculateCostOfLuggage;
 GO
-CREATE FUNCTION Flight.ufnCalculateCostOfLuggage(@Weight int, @LuggageTypeID int)
+CREATE FUNCTION Flight.ufnCalculateCostOfLuggage(@Weight int, @LuggageTypeID int, @TicketTypeID int)
 RETURNS money
 AS
 BEGIN
     DECLARE @result int;
 
+    SELECT @Weight -= TT.FreeWeight
+    FROM Flight.TicketType TT
+    WHERE TT.TicketTypeID = @TicketTypeID;
+
     SELECT TOP(1) @result = @Weight * LT.Cost
     FROM Flight.LuggageType LT
     WHERE LT.LuggageTypeID = @LuggageTypeID;
+
+    IF @result < 0
+        RETURN 0;
 
     RETURN @result;
 END;
 GO
 
-DROP function if exists Flight.ufnGetAllEmployees;
+DROP function IF EXISTS Flight.ufnGetAllEmployees;
 GO
 CREATE FUNCTION Flight.ufnGetAllEmployees ()
 RETURNS TABLE
@@ -78,7 +85,7 @@ RETURN (
     FROM Person.Employee_EmployeeRole EER));
 GO
 
-DROP function if exists Flight.ufnGetAllClients;
+DROP function IF EXISTS Flight.ufnGetAllClients;
 GO
 CREATE FUNCTION Flight.ufnGetAllClients()
 RETURNS TABLE
@@ -90,7 +97,7 @@ RETURN (
     FROM Person.Employee_EmployeeRole EER));
 GO
 
-DROP function if exists Flight.ufnCalculateFinalCostOfTicket;
+DROP function IF EXISTS Flight.ufnCalculateFinalCostOfTicket;
 GO
 CREATE FUNCTION Flight.ufnCalculateFinalCostOfTicket(@TicketType int, @FlightID int, @PersonID int, @FlightScheduleID int)
 RETURNS money
@@ -102,25 +109,25 @@ BEGIN
     DECLARE @FlightCost int;
     DECLARE @Result money;
 
-    -- Beneficios
+    -- Benefits
     SELECT @TicketTotalCost = SUM(FB.Cost)
     FROM Flight.FlightBenefit FB
     WHERE FB.FlightBenefitID IN (SELECT FFT.FlightBenefitID
     FROM Flight.FlightBenefit_FlightType FFT
     WHERE FFT.FlightTypeID = @TicketType);
 
-    -- Equipaje
+    -- Luggage
     SELECT @LuggageTotalCost = SUM(L.Cost)
     FROM Flight.Luggage L
     WHERE L.PersonID = @PersonID
     AND L.FlightScheduleID = @FlightScheduleID;
 
-    -- Costo Ticket
+    -- Cost Ticket
     SELECT @TicketCost = TT.Cost
     FROM Flight.TicketType TT
     WHERE TT.TicketTypeID = @TicketType;
 
-    -- Costo Vuelo
+    -- FlightCost
     SELECT @FlightCost = F.TravelDistance
     FROM Flight.Flight F
     WHERE F.FlightID = @FlightID;
