@@ -1477,6 +1477,7 @@ CREATE PROCEDURE [Flight].[spUpdateLuggageType](
     @LuggageTypeID int
 , @LuggageTypeName varchar(100)
 , @Description varchar(200)
+, @Cost money
 )
 AS
 BEGIN
@@ -1487,6 +1488,7 @@ BEGIN
         [Flight].[LuggageType] WITH (UPDLOCK, SERIALIZABLE)
     SET [LuggageTypeName] = @LuggageTypeName
       , [Description]     = @Description
+      , [Cost] = @Cost
     WHERE [LuggageTypeID] = @LuggageTypeID;
 END;
 go
@@ -1496,6 +1498,7 @@ GO
 CREATE PROCEDURE [Flight].[spAddLuggageType](
     @LuggageTypeName varchar(100)
 , @Description varchar(200)
+, @Cost money
 )
 AS
 BEGIN
@@ -1503,9 +1506,9 @@ BEGIN
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
     INSERT INTO [Flight].[LuggageType] ( [LuggageTypeName]
-                                       , [Description])
+                                       , [Description], [Cost])
     VALUES ( @LuggageTypeName
-           , @Description);
+           , @Description, @Cost);
 END;
 go
 
@@ -1522,6 +1525,7 @@ BEGIN
     SELECT [LuggageTypeID]   = [LT].[LuggageTypeID]
          , [LuggageTypeName] = [LT].[LuggageTypeName]
          , [Description]     = [LT].[Description]
+         , [Cost]            = [LT].[Cost]
     FROM [Flight].[LuggageType] AS [LT]
     WHERE [LT].[LuggageTypeID] = @LuggageTypeID
 END;
@@ -1538,6 +1542,7 @@ BEGIN
     SELECT [LuggageTypeID]   = [LT].[LuggageTypeID]
          , [LuggageTypeName] = [LT].[LuggageTypeName]
          , [Description]     = [LT].[Description]
+         , [Cost]            = [LT].[Cost]
     FROM [Flight].[LuggageType] AS [LT]
 END;
 GO
@@ -2274,6 +2279,17 @@ BEGIN
     SET QUOTED_IDENTIFIER OFF;
     DECLARE @Cost money = Flight.[ufnCalculateFinalCostOfTicket](@TicketTypeID, @FlightID, @PersonID,
                                                                  @FlightScheduleID);
+
+    IF Flight.[ufnCalculateNumberOfRemainingAvailableSeats](@FlightScheduleID) = 0
+    BEGIN
+        RAISERROR('No seats available', 16, 1)
+    END
+
+    IF Flight.ufnValidateSeatIfAvailable(@FlightScheduleID, @SeatPlane) = 1
+    BEGIN
+        RAISERROR('That seat is taken', 16, 1)
+    END
+
     INSERT INTO [Flight].[Ticket] ( [FlightID]
                                   , [PersonID]
                                   , [TicketTypeID]
@@ -2307,6 +2323,11 @@ BEGIN
     SET QUOTED_IDENTIFIER OFF;
 
     SET @Cost = Flight.[ufnCalculateFinalCostOfTicket](@TicketTypeID, @FlightID, @PersonID, @FlightScheduleID);
+
+    IF Flight.ufnValidateSeatIfAvailable(@FlightScheduleID, @SeatPlane) = 1
+    BEGIN
+        RAISERROR('That seat is taken', 16, 1)
+    END
 
     UPDATE
         [Flight].[Ticket] WITH (UPDLOCK, SERIALIZABLE)
