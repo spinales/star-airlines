@@ -29,6 +29,8 @@ type City struct {
 }
 
 func main() {
+	// GenerateIndexCode()
+
 	dsn := "sqlserver://spinales:123456789@localhost:1433?database=StarAirlines2"
 	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -65,6 +67,62 @@ func main() {
 	FlightScheduleData(db)
 	LuggageData(db)
 	TicketData(db)
+}
+
+func GenerateIndexCode() {
+	arr := []Index{
+		{Schema: "Airport", Table: "Airport", Column: "AirportTypeID"},
+		{Schema: "Airport", Table: "Model", Column: "BrandID"},
+		{Schema: "Airport", Table: "Plane", Column: "ModelID"},
+		{Schema: "Airport", Table: "Plane", Column: "StatusPlaneID"},
+		{Schema: "Airport", Table: "Plane", Column: "BelongingAirport"},
+		{Schema: "Airport", Table: "Plane", Column: "AdmissionDate"},
+
+		{Schema: "Flight", Table: "Destination", Column: "CountryID"},
+		{Schema: "Flight", Table: "Flight", Column: "DestinationID"},
+		{Schema: "Flight", Table: "Flight", Column: "DestinationAirportID"},
+		{Schema: "Flight", Table: "FlightBenefit_FlightType", Column: "FlightBenefitID"},
+		{Schema: "Flight", Table: "Flight", Column: "FlightTypeID"},
+		{Schema: "Flight", Table: "FlightBenefit_FlightType", Column: "FlightTypeID"},
+		{Schema: "Flight", Table: "FlightSchedule", Column: "PlaneID"},
+		{Schema: "Flight", Table: "FlightSchedule", Column: "Pilot"},
+		{Schema: "Flight", Table: "FlightSchedule", Column: "Copilot"},
+		{Schema: "Flight", Table: "FlightSchedule", Column: "FlightID"},
+		{Schema: "Flight", Table: "Luggage", Column: "PersonID"},
+		{Schema: "Flight", Table: "Luggage", Column: "FlightScheduleID"},
+		{Schema: "Flight", Table: "Luggage", Column: "LuggageTyoeID"},
+		{Schema: "Flight", Table: "Luggage", Column: "LuggageStatusID"},
+		{Schema: "Flight", Table: "Ticket", Column: "FlightID"},
+		{Schema: "Flight", Table: "Ticket", Column: "PersonID"},
+		{Schema: "Flight", Table: "Ticket", Column: "TicketTypeID"},
+		{Schema: "Flight", Table: "Ticket", Column: "FlightScheduleID"},
+
+		{Schema: "Person", Table: "Person", Column: "Nationality"},
+		{Schema: "Person", Table: "Person", Column: "Document"},
+		{Schema: "Person", Table: "Person", Column: "DocumentTypeID"},
+		{Schema: "Person", Table: "Person", Column: "BloodTypeID"},
+		{Schema: "Person", Table: "Employee_StatusEmployee", Column: "EmployeeID"},
+		{Schema: "Person", Table: "Employee_StatusEmployee", Column: "StatusEmployeeID"},
+		{Schema: "Person", Table: "Employee_EmployeeRole", Column: "EmployeeID"},
+		{Schema: "Person", Table: "Employee_EmployeeRole", Column: "EmployeeRoleID"},
+	}
+
+	for _, v := range arr {
+		fmt.Printf(`DROP INDEX IF EXISTS IDXNC_%s_%s ON %s.%s;
+	GO
+	CREATE NONCLUSTERED INDEX IDXNC_%s_%s ON %s.%s
+		ON %s.%s(%s)
+		WITH (PAD_INDEX = OFF,
+			STATISTICS_NORECOMPUTE = OFF,
+			SORT_IN_TEMPDB = OFF,
+			DROP_EXISTING = OFF,
+			ONLINE = OFF,
+			ALLOW_ROW_LOCKS = ON,
+			ALLOW_PAGE_LOCKS = ON,
+			OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+	GO`, v.Table, v.Column, v.Schema, v.Table, v.Table, v.Column, v.Schema, v.Table, v.Schema, v.Table, v.Column)
+	}
+
 }
 
 func CountryData(db *gorm.DB) {

@@ -206,3 +206,9 @@ type Employee_StatusEmployee struct {
 	EndDate          time.Time
 	Description      string
 }
+
+type Index struct {
+	Schema string
+	Table  string
+	Column string
+}
