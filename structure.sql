@@ -278,9 +278,6 @@ create table
     StatusPlaneID int not null,
     AdmissionDate date not null,
     RetirementDate date,
-    SeatingCapacityHigh int not null,
-    SeatingCapacityMedium int not null,
-    SeatingCapacityLow int not null,
     BelongingAirport int,
     -- AirportID
     CONSTRAINT PK_Plane_PlaneID PRIMARY KEY CLUSTERED (PlaneID),
@@ -301,9 +298,6 @@ create table
     CoPilot int not null,
     -- EmplooyeeID
     FlightID int not null,
-    -- MediumSeatsAvailable int not null,
-    -- LowSeatsAvailable int not null,
-    -- HighSeatsAvailable int not null,
     CONSTRAINT PK_FlightSchedule_FlightScheduleID PRIMARY KEY CLUSTERED (FlightScheduleID),
     CONSTRAINT FK_FlightSchedule_Ref_Plane FOREIGN KEY (PlaneID) REFERENCES Airport.Plane (PlaneID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_FlightSchedule_Ref_Person_Pilot FOREIGN KEY (Pilot) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,

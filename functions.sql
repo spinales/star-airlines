@@ -1,7 +1,6 @@
 /*
 Functions
 */
-
 DROP function IF EXISTS Flight.ufnCalculateNumberOfRemainingAvailableSeats;
 GO
 CREATE FUNCTION Flight.ufnCalculateNumberOfRemainingAvailableSeats (@FlightScheduleID int)
@@ -17,7 +16,7 @@ BEGIN
     FROM Flight.FlightSchedule
     WHERE FlightSchedule.FlightScheduleID = @FlightScheduleID;
 
-    SELECT @SeatingCapacity = SUM(Plane.SeatingCapacityHigh + Plane.SeatingCapacityMedium + Plane.SeatingCapacityLow)
+    SELECT @SeatingCapacity = Plane.SeatingCapacity
     FROM Airport.Plane
     WHERE Plane.PlaneID = @PlaneID;
 
