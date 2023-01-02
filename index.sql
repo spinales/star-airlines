@@ -68,197 +68,466 @@ NonClustered Index
 IDXNC_  non clustered index
 */
 
+-- Template
+DROP INDEX IF EXISTS IDXNC_Airport_DestinationID ON Airport.Airport;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Airport_DestinationID
+    ON Airport.Airport(DestinationID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
 
+DROP INDEX IF EXISTS IDXNC_Airport_AirportTypeID ON Airport.Airport;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Airport_AirportTypeID
+    ON Airport.Airport(AirportTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
 
--- --Nombre de aeropuerto
--- CREATE NONCLUSTERED INDEX [IDXC_Name] ON [Airport].[Airport]
--- (
--- 	[Name] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- --Direccion del aeropuerto
--- CREATE NONCLUSTERED INDEX [IDXC_Direction] ON [Airport].[Airport]
--- (
--- 	[DestinationID] ASC,
--- 	[Direction] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- --Siglas de aeropuerto
--- CREATE NONCLUSTERED INDEX [IDXC_AirportID] ON [Airport].[Airport]
--- (
--- 	[AirportID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
---
--- -- INDICES DEL VUELO: ----------------------------------------------------------------------------------------------------------------
---
--- --Nombre del vuelo
--- CREATE NONCLUSTERED INDEX [IDXC_FlightID] ON [Flight].[Flight]
--- (
--- 	[FlightID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Destino del vuelo
--- CREATE NONCLUSTERED INDEX [IDXC_Destino] ON [Flight].[Flight]
--- (
--- 	[DestinationID] ASC,
--- 	[DestinationAirportID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Costo del vuelo
--- CREATE NONCLUSTERED INDEX [IDXC_FlightCost] ON [Flight].[Flight]
--- (
--- 	[FlightCost] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Tipo del vuelo
--- CREATE NONCLUSTERED INDEX [IDXC_FlightTypeID] ON [Flight].[Flight]
--- (
--- 	[FlightTypeID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL DESTINO: ----------------------------------------------------------------------------------------------------------------
---
--- --Nombre del destino
--- CREATE NONCLUSTERED INDEX [IDXC_Name] ON [Flight].[Destination]
--- (
--- 	[Name] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Siglas del Destino
--- CREATE NONCLUSTERED INDEX [IDXC_DestinationID] ON [Flight].[Destination]
--- (
--- 	[DestinationID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL TICKET: ----------------------------------------------------------------------------------------------------------------
---
--- --Cliente del ticket
--- CREATE NONCLUSTERED INDEX [IDCX_PersonID] ON [Flight].[Ticket]
--- (
--- 	[PersonID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- --Asiento del ticket
--- CREATE NONCLUSTERED INDEX [IDXC_SeatPlane] ON [Flight].[Ticket]
--- (
--- 	[SeatPlane] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- --Calendario del ticket
--- CREATE NONCLUSTERED INDEX [IDXC_FlightScheduleID] ON [Flight].[Ticket]
--- (
--- 	[FlightScheduleID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL PAIS: ----------------------------------------------------------------------------------------------------------------
---
--- --Nombre del pais
--- CREATE NONCLUSTERED INDEX [IDXC_Name] ON [Flight].[Country]
--- (
--- 	[Name] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL AVION: ----------------------------------------------------------------------------------------------------------------
---
--- --Status del avion
--- CREATE NONCLUSTERED INDEX [IDXC_StatusPlaneID] ON [Airport].[Plane]
--- (
--- 	[StatusPlaneID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Modelo del avion
--- CREATE NONCLUSTERED INDEX [IDXC_Model] ON [Airport].[Plane]
--- (
--- 	[Model] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL CALENDARIO: ----------------------------------------------------------------------------------------------------------------
---
--- -- Fecha de LLegada y Salida  en el calendario
--- CREATE NONCLUSTERED INDEX [IDXC_Date] ON [Flight].[FlightSchedule]
--- (
--- 	[DepartureDate] ASC,
--- 	[ArrivalDate] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Destino en el calendario !!(El destino no esta en el calendario, se remplazara por el PlaneID)!!
--- CREATE NONCLUSTERED INDEX [IDXC_Destino(PlaneID)] ON [Flight].[FlightSchedule]
--- (
--- 	[PlaneID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- ID del vuelo en el calendario
--- CREATE NONCLUSTERED INDEX [IDXC_FlightID] ON [Flight].[FlightSchedule]
--- (
--- 	[FlightID] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
---
--- --INDICES  DEL EMPLEADO: ----------------------------------------------------------------------------------------------------------------
---
--- --Nombre y Apellido del Empleado
--- CREATE NONCLUSTERED INDEX [IDXC_NameEmployee] ON [Person].[Person]
--- (
--- 	[FirstName] ASC,
--- 	[LastName] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Documento del Empleado
--- CREATE NONCLUSTERED INDEX [IDXC_DocumentEmployee] ON [Person].[Person]
--- (
--- 	[Document] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- --Estado del Empleado  !!(Este fue creado en la tabla StatusEmployee porque el campo no esta en la tabla Person.Person)!!
--- CREATE NONCLUSTERED INDEX [IDXC_StatusEmployee] ON [Person].[StatusEmployee]
--- (
--- 	[StatusEmployeeID] ASC,
--- 	[Description] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
---
--- --INDICES  DEL CLIENTE: ----------------------------------------------------------------------------------------------------------------
---
--- --Nombre y Apellido del Cliente
--- CREATE NONCLUSTERED INDEX [IDXC_NameCliente] ON [Person].[Person]
--- (
--- 	[FirstName] ASC,
--- 	[LastName] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
---
--- -- Documento del Cliente
--- CREATE NONCLUSTERED INDEX [IDXC_DocumentCliente] ON [Person].[Person]
--- (
--- 	[Document] ASC
--- )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
--- GO
+DROP INDEX IF EXISTS IDXNC_Model_BrandID ON Airport.Model;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Model_BrandID
+    ON Airport.Model(BrandID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Plane_ModelID ON Airport.Plane;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Plane_ModelID
+    ON Airport.Plane(ModelID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Plane_StatusPlaneID ON Airport.Plane;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Plane_StatusPlaneID
+    ON Airport.Plane(StatusPlaneID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Plane_BelongingAirport ON Airport.Plane;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Plane_BelongingAirport
+    ON Airport.Plane(BelongingAirport)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Plane_AdmissionDate ON Airport.Plane;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Plane_AdmissionDate
+    ON Airport.Plane(AdmissionDate)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Destination_CountryID ON Flight.Destination;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Destination_CountryID
+    ON Flight.Destination(CountryID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Flight_DestinationID ON Flight.Flight;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Flight_DestinationID
+    ON Flight.Flight(DestinationID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Flight_DestinationAirportID ON Flight.Flight;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Flight_DestinationAirportID
+    ON Flight.Flight(DestinationAirportID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightBenefit_FlightType_FlightBenefitID ON Flight.FlightBenefit_FlightType;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightBenefit_FlightType_FlightBenefitID
+    ON Flight.FlightBenefit_FlightType(FlightBenefitID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Flight_FlightTypeID ON Flight.Flight;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Flight_FlightTypeID
+    ON Flight.Flight(FlightTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightBenefit_FlightType_FlightTypeID ON Flight.FlightBenefit_FlightType;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightBenefit_FlightType_FlightTypeID
+    ON Flight.FlightBenefit_FlightType(FlightTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightSchedule_PlaneID ON Flight.FlightSchedule;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightSchedule_PlaneID
+    ON Flight.FlightSchedule(PlaneID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightSchedule_Pilot ON Flight.FlightSchedule;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightSchedule_Pilot
+    ON Flight.FlightSchedule(Pilot)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightSchedule_Copilot ON Flight.FlightSchedule;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightSchedule_Copilot
+    ON Flight.FlightSchedule(Copilot)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_FlightSchedule_FlightID ON Flight.FlightSchedule;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_FlightSchedule_FlightID
+    ON Flight.FlightSchedule(FlightID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Luggage_PersonID ON Flight.Luggage;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Luggage_PersonID
+    ON Flight.Luggage(PersonID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Luggage_FlightScheduleID ON Flight.Luggage;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Luggage_FlightScheduleID
+    ON Flight.Luggage(FlightScheduleID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Luggage_LuggageTypeID ON Flight.Luggage;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Luggage_LuggageTypeID
+    ON Flight.Luggage(LuggageTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Luggage_LuggageStatusID ON Flight.Luggage;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Luggage_LuggageStatusID
+    ON Flight.Luggage(LuggageStatusID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Ticket_FlightID ON Flight.Ticket;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Ticket_FlightID
+    ON Flight.Ticket(FlightID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Ticket_PersonID ON Flight.Ticket;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Ticket_PersonID
+    ON Flight.Ticket(PersonID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Ticket_TicketTypeID ON Flight.Ticket;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Ticket_TicketTypeID
+    ON Flight.Ticket(TicketTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Ticket_FlightScheduleID ON Flight.Ticket;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Ticket_FlightScheduleID
+    ON Flight.Ticket(FlightScheduleID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Person_Nationality ON Person.Person;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Person_Nationality
+    ON Person.Person(Nationality)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Person_Document ON Person.Person;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Person_Document
+    ON Person.Person(Document)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Person_DocumentTypeID ON Person.Person;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Person_DocumentTypeID
+    ON Person.Person(DocumentTypeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Person_BloodType ON Person.Person;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Person_BloodType
+    ON Person.Person(BloodType)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Employee_StatusEmployee_EmployeeID ON Person.Employee_StatusEmployee;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Employee_StatusEmployee_EmployeeID
+    ON Person.Employee_StatusEmployee(EmployeeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Employee_StatusEmployee_StatusEmployeeID ON Person.Employee_StatusEmployee;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Employee_StatusEmployee_StatusEmployeeID
+    ON Person.Employee_StatusEmployee(StatusEmployeeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Employee_EmployeeRole_EmployeeID ON Person.Employee_EmployeeRole;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Employee_EmployeeRole_EmployeeID
+    ON Person.Employee_EmployeeRole(EmployeeID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
+DROP INDEX IF EXISTS IDXNC_Employee_EmployeeRole_EmployeeRoleID ON Person.Employee_EmployeeRole;
+GO
+CREATE NONCLUSTERED INDEX IDXNC_Employee_EmployeeRole_EmployeeRoleID
+    ON Person.Employee_EmployeeRole(EmployeeRoleID)
+    WITH (PAD_INDEX = OFF,
+        STATISTICS_NORECOMPUTE = OFF,
+        SORT_IN_TEMPDB = OFF,
+        DROP_EXISTING = OFF,
+        ONLINE = OFF,
+        ALLOW_ROW_LOCKS = ON,
+        ALLOW_PAGE_LOCKS = ON,
+        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
+GO
+
