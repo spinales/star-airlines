@@ -87,3 +87,13 @@ CREATE VIEW Person.vPerson AS
     INNER JOIN Person.DocumentType DT on DT.DocumentTypeID = P.DocumentTypeID
     INNER JOIN Person.BloodType BT on P.BloodType = BT.BloodTypeID
 GO
+
+DROP VIEW IF EXISTS Flight.vBenefits;
+GO
+CREATE VIEW Flight.vBenefits AS
+    SELECT FT.FlightTypeName FlightType,FT.Description, FB.FlightBenefitName Benefit, FB.Cost
+    FROM Flight.FlightBenefit_FlightType FFT
+    INNER JOIN Flight.FlightType FT on FT.FlightTypeID = FFT.FlightTypeID
+    INNER JOIN Flight.FlightBenefit FB on FB.FlightBenefitID = FFT.FlightBenefitID
+GO
+
