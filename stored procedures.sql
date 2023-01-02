@@ -2082,7 +2082,10 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-    DECLARE @Cost money = Flight.ufnCalculateCostOfLuggage(@Weight, @LuggageTypeID, @TicketTypeID);
+    DECLARE @Cost money;
+
+    DECLARE @FreeWeight int = Flight.ufnCalculateTheAmountOFreeWeightRemaining(@PersonID, @FlightScheduleID, @TicketTypeID);
+    SET @Cost = Flight.ufnCalculateCostOfLuggage(@Weight, @LuggageTypeID, @FreeWeight)
 
     INSERT INTO [Flight].[Luggage] ( [PersonID]
                                    , [FlightScheduleID]
@@ -2117,7 +2120,8 @@ BEGIN
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
 
-    SET @Cost = Flight.ufnCalculateCostOfLuggage(@Weight, @LuggageTypeID, @TicketTypeID);
+    DECLARE @FreeWeight int = Flight.ufnCalculateTheAmountOFreeWeightRemaining(@PersonID, @FlightScheduleID, @TicketTypeID);
+    SET @Cost = Flight.ufnCalculateCostOfLuggage(@Weight, @LuggageTypeID, @FreeWeight)
 
     UPDATE
         [Flight].[Luggage] WITH (UPDLOCK, SERIALIZABLE)

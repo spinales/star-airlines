@@ -51,15 +51,13 @@ GO
 
 DROP function IF EXISTS Flight.ufnCalculateCostOfLuggage;
 GO
-CREATE FUNCTION Flight.ufnCalculateCostOfLuggage(@Weight int, @LuggageTypeID int, @TicketTypeID int)
+CREATE FUNCTION Flight.ufnCalculateCostOfLuggage(@Weight int, @LuggageTypeID int, @FreeWeightRemain int)
 RETURNS money
 AS
 BEGIN
     DECLARE @result int;
 
-    SELECT @Weight -= TT.FreeWeight
-    FROM Flight.TicketType TT
-    WHERE TT.TicketTypeID = @TicketTypeID;
+    SET @Weight -= @FreeWeightRemain;
 
     SELECT TOP(1) @result = @Weight * LT.Cost
     FROM Flight.LuggageType LT
@@ -132,6 +130,50 @@ BEGIN
     WHERE F.FlightID = @FlightID;
 
     SET @Result = @TicketTotalCost + @LuggageTotalCost + @TicketCost + @FlightCost;
+    RETURN @Result;
+END;
+GO
+
+DROP function IF EXISTS Flight.ufnCalculateTotalOfLuggage;
+GO
+CREATE FUNCTION Flight.ufnCalculateTotalOfLuggage(@PersonID int, @FlightScheduleID int)
+RETURNS int
+AS
+BEGIN
+    DECLARE @Result int;
+
+    SELECT @Result = COUNT(*)
+    FROM Flight.Luggage
+    WHERE PersonID = @PersonID
+    AND FlightScheduleID = @FlightScheduleID;
+
+    RETURN @Result;
+END;
+GO
+
+DROP function IF EXISTS Flight.ufnCalculateTheAmountOFreeWeightRemaining;
+GO
+CREATE FUNCTION Flight.ufnCalculateTheAmountOFreeWeightRemaining(@PersonID int, @FlightScheduleID int, @TicketTypeID int)
+RETURNS int
+AS
+BEGIN
+    DECLARE @Result int;
+    DECLARE @Weight int
+    DECLARE @Free int;
+
+    SELECT @Weight = SUM(L.Weight)
+    FROM Flight.Luggage L
+    WHERE PersonID = @PersonID
+    AND FlightScheduleID = @FlightScheduleID;
+
+    SELECT @Free = TT.FreeWeight
+    FROM  Flight.TicketType TT
+    WHERE TicketTypeID = @TicketTypeID;
+
+    SET @Result = @Free - @Weight
+    IF @Result < 0
+        RETURN 0;
+
     RETURN @Result;
 END;
 GO
