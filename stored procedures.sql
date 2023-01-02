@@ -142,9 +142,21 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Person.Person
-WHERE Person.Document = @Document;
+SELECT  [PersonID] = [P].[PersonID]
+            ,[FirstName] = [P].[FirstName]
+            ,[LastName] = [P].[LastName]
+            ,[AdmissionDate] = [P].[AdmissionDate]
+            ,[Nationality] = [P].[Nationality]
+            ,[Gender] = [P].[Gender]
+            ,[Document] = [P].[Document]
+            ,[DocumentTypeID] = [P].[DocumentTypeID]
+            ,[PhoneNumber] = [P].[PhoneNumber]
+            ,[DOB] = [P].[DOB]
+            ,[BloodType] = [P].[BloodType]
+            ,[Direction] = [P].[Direction]
+            ,[Email] = [P].[Email]
+FROM Person.Person P
+WHERE P.Document = @Document;
 GO
 
 DROP PROCEDURE IF EXISTS Person.spSearchEmployeeByRole
@@ -154,7 +166,19 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT P.*
+SELECT  [PersonID] = [P].[PersonID]
+            ,[FirstName] = [P].[FirstName]
+            ,[LastName] = [P].[LastName]
+            ,[AdmissionDate] = [P].[AdmissionDate]
+            ,[Nationality] = [P].[Nationality]
+            ,[Gender] = [P].[Gender]
+            ,[Document] = [P].[Document]
+            ,[DocumentTypeID] = [P].[DocumentTypeID]
+            ,[PhoneNumber] = [P].[PhoneNumber]
+            ,[DOB] = [P].[DOB]
+            ,[BloodType] = [P].[BloodType]
+            ,[Direction] = [P].[Direction]
+            ,[Email] = [P].[Email]
 FROM Person.Person P
          INNER JOIN Person.Employee_EmployeeRole on Person.Employee_EmployeeRole.EmployeeID = P.PersonID
 WHERE Person.Employee_EmployeeRole.EmployeeRoleID = @RoleID;
@@ -168,7 +192,19 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT P.*
+SELECT  [PersonID] = [P].[PersonID]
+            ,[FirstName] = [P].[FirstName]
+            ,[LastName] = [P].[LastName]
+            ,[AdmissionDate] = [P].[AdmissionDate]
+            ,[Nationality] = [P].[Nationality]
+            ,[Gender] = [P].[Gender]
+            ,[Document] = [P].[Document]
+            ,[DocumentTypeID] = [P].[DocumentTypeID]
+            ,[PhoneNumber] = [P].[PhoneNumber]
+            ,[DOB] = [P].[DOB]
+            ,[BloodType] = [P].[BloodType]
+            ,[Direction] = [P].[Direction]
+            ,[Email] = [P].[Email]
 FROM Person.Person P
          INNER JOIN Person.Employee_EmployeeRole on Person.Employee_EmployeeRole.EmployeeID = P.PersonID;
 GO
@@ -191,9 +227,21 @@ Insert Into @IDs (id) (SELECT P.PersonID
                                 INNER JOIN Person.Employee_EmployeeRole
                                            on Person.Employee_EmployeeRole.EmployeeID = P.PersonID);
 
-SELECT *
-FROM Person.Person
-WHERE Person.PersonID NOT IN (SELECT id from @IDs);
+SELECT  [PersonID] = [P].[PersonID]
+            ,[FirstName] = [P].[FirstName]
+            ,[LastName] = [P].[LastName]
+            ,[AdmissionDate] = [P].[AdmissionDate]
+            ,[Nationality] = [P].[Nationality]
+            ,[Gender] = [P].[Gender]
+            ,[Document] = [P].[Document]
+            ,[DocumentTypeID] = [P].[DocumentTypeID]
+            ,[PhoneNumber] = [P].[PhoneNumber]
+            ,[DOB] = [P].[DOB]
+            ,[BloodType] = [P].[BloodType]
+            ,[Direction] = [P].[Direction]
+            ,[Email] = [P].[Email]
+FROM Person.Person P
+WHERE P.PersonID NOT IN (SELECT id from @IDs);
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchPlaneByBrand
@@ -2472,5 +2520,80 @@ BEGIN
          , [FlightScheduleID] = [T].[FlightScheduleID]
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
+END;
+go
+
+/*
+Full text search
+*/
+
+DROP PROCEDURE IF EXISTS Person.spSearchPersonByFirstName;
+GO
+CREATE PROCEDURE Person.spSearchPersonByFirstName(
+    @FirstName varchar(100)
+)
+AS
+BEGIN
+    SET NOCOUNT, XACT_ABORT ON;
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER OFF;
+    SELECT  [PersonID] = [P].[PersonID]
+            ,[FirstName] = [P].[FirstName]
+            ,[LastName] = [P].[LastName]
+            ,[AdmissionDate] = [P].[AdmissionDate]
+            ,[Nationality] = [P].[Nationality]
+            ,[Gender] = [P].[Gender]
+            ,[Document] = [P].[Document]
+            ,[DocumentTypeID] = [P].[DocumentTypeID]
+            ,[PhoneNumber] = [P].[PhoneNumber]
+            ,[DOB] = [P].[DOB]
+            ,[BloodType] = [P].[BloodType]
+            ,[Direction] = [P].[Direction]
+            ,[Email] = [P].[Email]
+    FROM Person.Person P
+    WHERE CONTAINS(FirstName, @FirstName);
+END;
+go
+
+DROP PROCEDURE IF EXISTS Flight.spSearchDestinationByDestinationName;
+GO
+CREATE PROCEDURE Flight.spSearchDestinationByDestinationName(
+    @DestinationName varchar(100)
+)
+AS
+BEGIN
+    SET NOCOUNT, XACT_ABORT ON;
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER OFF;
+    SELECT [DestinationID] = [D].[DestinationID]
+            ,[CountryID] = [D].[CountryID]
+            ,[DestinationName] = [D].[DestinationName]
+            ,[Acronym] = [D].[Acronym]
+            ,[Latitude] = [D].[Latitude]
+            ,[Longitude] = [D].[Longitude]
+    FROM [Flight].[Destination] AS [D]
+    WHERE CONTAINS(DestinationName, @DestinationName);
+END;
+go
+
+DROP PROCEDURE IF EXISTS Flight.spSearchCountryByCountryName;
+GO
+CREATE PROCEDURE Flight.spSearchCountryByCountryName(
+    @CountryName varchar(100)
+)
+AS
+BEGIN
+    SET NOCOUNT, XACT_ABORT ON;
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER OFF;
+    SELECT [CountryID] = [C].[CountryID]
+            ,[ISO2] = [C].[ISO2]
+            ,[ISO3] = [C].[ISO3]
+            ,[CurrencyName] = [C].[CurrencyName]
+            ,[Latitude] = [C].[Latitude]
+            ,[Longitude] = [C].[Longitude]
+            ,[CountryName] = [C].[CountryName]
+    FROM [Flight].[Country] AS [C]
+    WHERE CONTAINS(CountryName, @CountryName);
 END;
 go
