@@ -26,6 +26,7 @@ type LuggageType struct {
 	LuggageTypeID   int `gorm:"primarykey"`
 	LuggageTypeName string
 	Description     string
+	Cost            uint
 }
 
 type StatusLuggage struct {
@@ -144,16 +145,13 @@ type Flight struct {
 }
 
 type Plane struct {
-	PlaneID               int `gorm:"primarykey"`
-	ModelID               int
-	SeatingCapacity       int
-	StatusPlaneID         int
-	AdmissionDate         time.Time
-	RetirementDate        time.Time
-	SeatingCapacityHigh   int
-	SeatingCapacityMedium int
-	SeatingCapacityLow    int
-	BelongingAirport      int
+	PlaneID          int `gorm:"primarykey"`
+	ModelID          int
+	SeatingCapacity  int
+	StatusPlaneID    int
+	AdmissionDate    time.Time
+	RetirementDate   time.Time
+	BelongingAirport int
 }
 
 type FlightSchedule struct {

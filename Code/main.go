@@ -221,22 +221,27 @@ func LuggageTypeData(db *gorm.DB) {
 		{
 			LuggageTypeName: "Checked baggage",
 			Description:     gofakeit.SentenceSimple(),
+			Cost:            5,
 		},
 		{
 			LuggageTypeName: "Hand luggage",
 			Description:     gofakeit.SentenceSimple(),
+			Cost:            0,
 		},
 		{
 			LuggageTypeName: "Personal accessory",
 			Description:     gofakeit.SentenceSimple(),
+			Cost:            1,
 		},
 		{
 			LuggageTypeName: "Pet",
 			Description:     gofakeit.SentenceSimple(),
+			Cost:            15,
 		},
 		{
 			LuggageTypeName: "Cash register",
 			Description:     gofakeit.SentenceSimple(),
+			Cost:            5,
 		},
 	}
 
@@ -530,9 +535,6 @@ func PlaneData(db *gorm.DB) {
 			// RetirementDate:        time.Time,
 			BelongingAirport: 1,
 		}
-		temp.SeatingCapacityHigh = temp.SeatingCapacity / 10
-		temp.SeatingCapacityLow = (temp.SeatingCapacity * 6) / 10
-		temp.SeatingCapacityMedium = (temp.SeatingCapacity * 3) / 10
 		db.Table("Airport.Plane").Create(&temp)
 	}
 }
