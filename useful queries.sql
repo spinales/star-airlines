@@ -20,3 +20,18 @@ from sys.foreign_keys fk
                             for xml path ('') ) D (column_names)
 order by schema_name(fk_tab.schema_id) + '.' + fk_tab.name,
     schema_name(pk_tab.schema_id) + '.' + pk_tab.name
+
+-- Database space
+EXEC sp_spaceused @oneresultset = 1;
+
+-- get all functions
+SELECT name, definition, type_desc
+  FROM sys.sql_modules m
+INNER JOIN sys.objects o
+        ON m.object_id=o.object_id
+WHERE type_desc like '%function%'
+
+-- get stored procedures
+SELECT *
+  FROM StarAirlines3.INFORMATION_SCHEMA.ROUTINES
+ WHERE ROUTINE_TYPE = 'PROCEDURE'
