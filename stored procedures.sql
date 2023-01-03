@@ -1305,7 +1305,7 @@ BEGIN
     FROM [Flight].[FlightType] AS [FT]
     WHERE [FT].[FlightTypeID] = @FlightTypeID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spGetFlightType];
 GO
@@ -1320,7 +1320,7 @@ BEGIN
          , [Description]    = [FT].[Description]
     FROM [Flight].[FlightType] AS [FT]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spFlightUpdate];
 GO
@@ -1348,7 +1348,7 @@ BEGIN
       , [FlightTypeID]         = @FlightTypeID
     WHERE [FlightID] = @FlightID;
 END;
-go
+GO
 
 
 DROP PROCEDURE IF EXISTS [Flight].[spAddFlightType];
@@ -1367,7 +1367,7 @@ BEGIN
     VALUES ( @FlightTypeName
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spAddModel];
 GO
@@ -1388,7 +1388,7 @@ BEGIN
            , @Description
            , @BrandID);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spUpdateModel];
 GO
@@ -1410,7 +1410,7 @@ BEGIN
       , [BrandID]     = @BrandID
     WHERE [ModelID] = @ModelID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spSearchBrandByID];
 GO
@@ -1430,7 +1430,7 @@ BEGIN
     WHERE [M].[ModelID] = @ModelID
 
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spGetBrand];
 GO
@@ -1446,7 +1446,7 @@ BEGIN
          , [BrandID]     = [M].[BrandID]
     FROM [Airport].[Model] AS [M]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spUpdateStatusPlane];
 GO
@@ -1466,7 +1466,7 @@ BEGIN
       , [Description]     = @Description
     WHERE [StatusPlaneID] = @StatusPlaneID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spAddStatusPlane];
 GO
@@ -1484,7 +1484,7 @@ BEGIN
     VALUES ( @StatusPlaneName
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spSearchStatusPlaneByID];
 GO
@@ -1502,7 +1502,7 @@ BEGIN
     FROM [Airport].[StatusPlane] AS [SP]
     WHERE [SP].[StatusPlaneID] = @StatusPlaneID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Airport].[spGetStatusPlane];
 GO
@@ -1517,7 +1517,7 @@ BEGIN
          , [Description]     = [SP].[Description]
     FROM [Airport].[StatusPlane] AS [SP]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spUpdateLuggageType];
 GO
@@ -1539,7 +1539,7 @@ BEGIN
       , [Cost] = @Cost
     WHERE [LuggageTypeID] = @LuggageTypeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spAddLuggageType];
 GO
@@ -1558,7 +1558,7 @@ BEGIN
     VALUES ( @LuggageTypeName
            , @Description, @Cost);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageTypeByID];
 GO
@@ -1613,7 +1613,7 @@ BEGIN
       , [Description]   = @Description
     WHERE [BloodTypeID] = @BloodTypeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spAddBloodType];
 GO
@@ -1631,7 +1631,7 @@ BEGIN
     VALUES ( @BloodTypeName
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchBloodTypeByID];
 GO
@@ -1649,7 +1649,7 @@ BEGIN
     FROM [Person].[BloodType] AS [BT]
     WHERE [BT].[BloodTypeID] = @BloodTypeID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spGetBloodType];
 GO
@@ -1664,7 +1664,7 @@ BEGIN
          , [Description]   = [BT].[Description]
     FROM [Person].[BloodType] AS [BT]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spAddStatusEmployee];
 GO
@@ -1682,7 +1682,7 @@ BEGIN
     VALUES ( @StatusEmployeeName
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spUpdateStatusEmployee];
 GO
@@ -1702,7 +1702,7 @@ BEGIN
       , [Description]        = @Description
     WHERE [StatusEmployeeID] = @StatusEmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchStatusEmployeeByID];
 GO
@@ -1721,7 +1721,7 @@ BEGIN
     FROM [Person].[StatusEmployee] AS [SE]
     WHERE [SE].[StatusEmployeeID] = @StatusEmployeeID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spGetStatusEmployee];
 GO
@@ -1737,7 +1737,7 @@ BEGIN
          , [Description]        = [SE].[Description]
     FROM [Person].[StatusEmployee] AS [SE]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spAddFlightBenefit_FlightTypeCreate];
 GO
@@ -1755,7 +1755,7 @@ BEGIN
     VALUES ( @FlightBenefitID
            , @FlightTypeID);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spUpdateFlightBenefit_FlightType];
 GO
@@ -1775,7 +1775,7 @@ BEGIN
     WHERE [FlightBenefitID] = @FlightBenefitID
       AND [FlightTypeID] = @FlightTypeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchFlightBenefit_FlightTypeReadByFlightBenefitIDAndFlightTypeID];
 GO
@@ -1797,7 +1797,7 @@ BEGIN
       AND [FBFT].[FlightTypeID] = @FlightTypeID
 
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchFlightBenefit_FlightTypeByFlightBenefitID];
 GO
@@ -1816,7 +1816,7 @@ BEGIN
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
     WHERE [FBFT].[FlightBenefitID] = @FlightBenefitID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchFlightBenefit_FlightTypeByFlightTypeID];
 GO
@@ -1835,7 +1835,7 @@ BEGIN
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
     WHERE [FBFT].[FlightTypeID] = @FlightTypeID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spGetFlightBenefit_FlightType];
 GO
@@ -1849,7 +1849,7 @@ BEGIN
          , [FlightTypeID]    = [FBFT].[FlightTypeID]
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spAddEmployee_EmployeeRole];
 GO
@@ -1876,7 +1876,7 @@ BEGIN
            , @EndDate
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spUpdateEmployee_EmployeeRole];
 GO
@@ -1902,7 +1902,7 @@ BEGIN
     WHERE EmployeeID = @EmployeeID
       AND EmployeeRoleID = @EmployeeRoleID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_EmployeeRoleReadByEmployeeIDAndEmployeeRoleID];
 GO
@@ -1924,7 +1924,7 @@ BEGIN
     WHERE EmployeeID = @EmployeeID
       AND EmployeeRoleID = @EmployeeRoleID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_EmployeeRoleByEmployeeID];
 GO
@@ -1944,7 +1944,7 @@ BEGIN
     FROM [Person].[Employee_EmployeeRole] AS [EER]
     WHERE EmployeeID = @EmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_EmployeeRoleByEmployeeRoleID];
 GO
@@ -1964,7 +1964,7 @@ BEGIN
     FROM [Person].[Employee_EmployeeRole] AS [EER]
     WHERE EmployeeRoleID = @EmployeeRoleID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spGetEmployee_EmployeeRole];
 GO
@@ -1981,7 +1981,7 @@ BEGIN
          , [Description]    = [EER].[Description]
     FROM [Person].[Employee_EmployeeRole] AS [EER];
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spAddEmployee_StatusEmployee];
 GO
@@ -2008,7 +2008,7 @@ BEGIN
            , @EndDate
            , @Description);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spUpdateEmployee_StatusEmployee];
 GO
@@ -2034,7 +2034,7 @@ BEGIN
     WHERE EmployeeID = @EmployeeID
       AND StatusEmployeeID = @StatusEmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_StatusEmployeeByEmployeeIDAndStatusEmployeeID];
 GO
@@ -2056,7 +2056,7 @@ BEGIN
     WHERE EmployeeID = @EmployeeID
       AND StatusEmployeeID = @StatusEmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_StatusEmployeeByEmployeeID];
 GO
@@ -2076,7 +2076,7 @@ BEGIN
     FROM [Person].[Employee_StatusEmployee] AS [ESE]
     WHERE EmployeeID = @EmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spSearchEmployee_StatusEmployeeByStatusEmployeeID];
 GO
@@ -2096,7 +2096,7 @@ BEGIN
     FROM [Person].[Employee_StatusEmployee] AS [ESE]
     WHERE StatusEmployeeID = @StatusEmployeeID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Person].[spGetEmployee_StatusEmployee];
 GO
@@ -2113,7 +2113,7 @@ BEGIN
          , [Description]      = [ESE].[Description]
     FROM [Person].[Employee_StatusEmployee] AS [ESE];
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spAddLuggage];
 GO
@@ -2148,7 +2148,7 @@ BEGIN
            , @LuggageTypeID
            , @LuggageStatusID);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spUpdateLuggage];
 GO
@@ -2181,7 +2181,7 @@ BEGIN
       , [LuggageStatusID]  = @LuggageStatusID
     WHERE [LuggageID] = @LuggageID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spGetLuggage];
 GO
@@ -2200,7 +2200,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageByLuggageStatusID];
 GO
@@ -2224,7 +2224,7 @@ BEGIN
     WHERE [L].[LuggageStatusID] = @LuggageStatusID
 
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageByLuggageTypeID];
 GO
@@ -2247,7 +2247,7 @@ BEGIN
     WHERE [L].[LuggageTypeID] = @LuggageTypeID
 
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageByLuggageID];
 GO
@@ -2269,7 +2269,7 @@ BEGIN
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[LuggageID] = @LuggageID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageByPersonID];
 GO
@@ -2291,7 +2291,7 @@ BEGIN
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[PersonID] = @PersonID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchLuggageByFlightScheduleID];
 GO
@@ -2313,7 +2313,7 @@ BEGIN
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[FlightScheduleID] = @FlightScheduleID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spAddTicket];
 GO
@@ -2355,7 +2355,7 @@ BEGIN
            , @FlightScheduleID
            , @SeatPlane);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spUpdateTicket];
 GO
@@ -2391,7 +2391,7 @@ BEGIN
       , [SeatPlane]        = @SeatPlane
     WHERE [TicketID] = @TicketID;
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchTicketByFlightID];
 GO
@@ -2413,7 +2413,7 @@ BEGIN
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[FlightID] = @FlightID
 END;
-go
+GO
 
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchTicketByPersonID];
@@ -2436,7 +2436,7 @@ BEGIN
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[PersonID] = @PersonID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchTicketByTicketTypeID];
 GO
@@ -2458,7 +2458,7 @@ BEGIN
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[TicketTypeID] = @TicketTypeID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchTicketByFlightScheduleID];
 GO
@@ -2480,7 +2480,7 @@ BEGIN
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[FlightScheduleID] = @FlightScheduleID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spSearchTicketByTicketID];
 GO
@@ -2502,7 +2502,7 @@ BEGIN
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[TicketID] = @TicketID
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS [Flight].[spGetTicket];
 GO
@@ -2521,7 +2521,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
 END;
-go
+GO
 
 /*
 Full text search
@@ -2553,7 +2553,7 @@ BEGIN
     FROM Person.Person P
     WHERE CONTAINS(FirstName, @FirstName);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchDestinationByDestinationName;
 GO
@@ -2574,7 +2574,7 @@ BEGIN
     FROM [Flight].[Destination] AS [D]
     WHERE CONTAINS(DestinationName, @DestinationName);
 END;
-go
+GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchCountryByCountryName;
 GO
@@ -2596,4 +2596,4 @@ BEGIN
     FROM [Flight].[Country] AS [C]
     WHERE CONTAINS(CountryName, @CountryName);
 END;
-go
+GO
