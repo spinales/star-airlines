@@ -466,9 +466,6 @@ CREATE PROCEDURE [Airport].[spAddPlane] @ModelID int
 , @StatusPlaneID int
 , @AdmissionDate date
 , @RetirementDate date
-, @SeatingCapacityHigh int
-, @SeatingCapacityMedium int
-, @SeatingCapacityLow int
 , @BelongingAirport int
 AS
 BEGIN
@@ -480,18 +477,12 @@ BEGIN
                                   , [StatusPlaneID]
                                   , [AdmissionDate]
                                   , [RetirementDate]
-                                  , [SeatingCapacityHigh]
-                                  , [SeatingCapacityMedium]
-                                  , [SeatingCapacityLow]
                                   , [BelongingAirport])
     VALUES ( @ModelID
            , @SeatingCapacity
            , @StatusPlaneID
            , @AdmissionDate
            , @RetirementDate
-           , @SeatingCapacityHigh
-           , @SeatingCapacityMedium
-           , @SeatingCapacityLow
            , @BelongingAirport);
 END;
 GO
@@ -505,9 +496,6 @@ CREATE PROCEDURE [Airport].[spUpdatePlane](
 , @StatusPlaneID int
 , @AdmissionDate date
 , @RetirementDate date
-, @SeatingCapacityHigh int
-, @SeatingCapacityMedium int
-, @SeatingCapacityLow int
 , @BelongingAirport int
 )
 AS
@@ -522,9 +510,6 @@ BEGIN
       , [StatusPlaneID]         = @StatusPlaneID
       , [AdmissionDate]         = @AdmissionDate
       , [RetirementDate]        = @RetirementDate
-      , [SeatingCapacityHigh]   = @SeatingCapacityHigh
-      , [SeatingCapacityMedium] = @SeatingCapacityMedium
-      , [SeatingCapacityLow]    = @SeatingCapacityLow
       , [BelongingAirport]      = @BelongingAirport
     WHERE [PlaneID] = @PlaneID;
 END;
