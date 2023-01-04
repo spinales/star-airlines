@@ -246,6 +246,25 @@ Statidictis
 check database integrity
 */
 
+EXEC msdb.dbo.sp_add_job
+    @job_name = N'Weekly Database Integrity Revision' ;
+GO
+EXEC msdb.dbo.sp_add_jobstep
+    @job_name = N'Weekly Database Integrity Revision',
+    @step_name = N'Check database integrity',
+    @subsystem = N'TSQL',
+    @command = N'DBCC CHECKDB',
+    @retry_attempts = 5,
+    @retry_interval = 5 ;
+GO
+EXEC msdb.dbo.sp_attach_schedule
+   @job_name = N'Weekly Database Integrity Revision',
+   @schedule_name = N'RunWeekly';
+GO
+EXEC msdb.dbo.sp_add_jobserver
+    @job_name = N'Weekly Database Integrity Revision' ;
+GO
+
 /*
 History cleanup
 */
