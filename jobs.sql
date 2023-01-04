@@ -235,7 +235,41 @@ GO
 /*
 Index, rebuild index
 */
-
+EXEC msdb.dbo.sp_add_job
+    @job_name = N'Weekly Maintance of Indexes' ;
+GO
+EXEC msdb.dbo.sp_add_jobstep
+    @job_name = N'Weekly Maintance of Indexes' ,
+    @step_name = N'Rebuild indexes',
+    @subsystem = N'TSQL',
+    @command = N'DECLARE @TableName VARCHAR(255)
+        DECLARE @sql NVARCHAR(500)
+        DECLARE @fillfactor INT
+        SET @fillfactor = 80
+        DECLARE TableCursor CURSOR FOR
+        SELECT QUOTENAME(OBJECT_SCHEMA_NAME([object_id]))+''.'' + QUOTENAME(name) AS TableName
+        FROM sys.tables
+        OPEN TableCursor
+        FETCH NEXT FROM TableCursor INTO @TableName
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+        SET @sql = ''ALTER INDEX ALL ON '' + @TableName + '' REBUILD WITH (FILLFACTOR = '' + CONVERT(VARCHAR(3),@fillfactor) + '')''
+        EXEC (@sql)
+        FETCH NEXT FROM TableCursor INTO @TableName
+        END
+        CLOSE TableCursor
+        DEALLOCATE TableCursor
+        GO',
+    @retry_attempts = 5,
+    @retry_interval = 5 ;
+GO
+EXEC msdb.dbo.sp_attach_schedule
+   @job_name = N'Weekly Maintance of Indexes' ,
+   @schedule_name = N'RunWeekly';
+GO
+EXEC msdb.dbo.sp_add_jobserver
+    @job_name = N'Weekly Maintance of Indexes';
+GO
 /*
 Statidictis
 */
