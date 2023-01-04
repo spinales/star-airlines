@@ -40,3 +40,16 @@ SELECT *
 SELECT *
   FROM INFORMATION_SCHEMA.ROUTINES
  WHERE ROUTINE_TYPE = 'PROCEDURE'
+
+SELECT *
+  FROM INFORMATION_SCHEMA.ROUTINES
+ WHERE ROUTINE_TYPE = 'PROCEDURE'
+    AND ROUTINES.ROUTINE_NAME LIKE 'sp%LuggageStatus%';
+
+-- users in database
+Select
+  [name]
+From
+  sysusers
+Where
+  issqlrole = 1
