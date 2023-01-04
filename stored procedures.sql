@@ -851,6 +851,19 @@ BEGIN
 END;
 GO
 
+DROP PROCEDURE IF EXISTS Flight.spGetStatusLuggage
+GO
+CREATE PROCEDURE [Flight].[spGetStatusLuggage]
+AS
+BEGIN
+    SET NOCOUNT, XACT_ABORT ON;
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER OFF;
+    SELECT *
+    FROM [Flight].[StatusLuggage] AS [SL]
+END;
+GO
+
 DROP PROCEDURE IF EXISTS Airport.spAddBrand
 GO
 CREATE PROCEDURE [Airport].[spAddBrand](
