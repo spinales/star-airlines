@@ -1,4 +1,35 @@
+Airport.Airport.AirportTypeID -> Airport.AirportType.AirportTypeID
+Airport.Airport.DestinationID -> Flight.Destination.DestinationID
+Airport.Model.BrandID -> Airport.Brand.BrandID
+Airport.Plane.BelongingAirport -> Airport.Airport.AirportID
+Airport.Plane.ModelID -> Airport.Model.ModelID
+Airport.Plane.StatusPlaneID -> Airport.StatusPlane.StatusPlaneID
 Flight.Destination.CountryID -> Flight.Country.CountryID
+Flight.Flight.DestinationAirportID -> Airport.Airport.AirportID
+Flight.Flight.DestinationID -> Flight.Destination.DestinationID
+Flight.Flight.FlightTypeID -> Flight.FlightType.FlightTypeID
+Flight.FlightBenefit_FlightType.FlightBenefitID -> Flight.FlightBenefit.FlightBenefitID
+Flight.FlightBenefit_FlightType.FlightTypeID -> Flight.FlightType.FlightTypeID
+Flight.FlightSchedule.PlaneID -> Airport.Plane.PlaneID
+Flight.FlightSchedule.FlightID -> Flight.Flight.FlightID
+Flight.FlightSchedule.Pilot -> Person.Person.PersonID
+Flight.FlightSchedule.CoPilot -> Person.Person.PersonID
+Flight.Luggage.FlightScheduleID -> Flight.FlightSchedule.FlightScheduleID
+Flight.Luggage.LuggageTypeID -> Flight.LuggageType.LuggageTypeID
+Flight.Luggage.LuggageStatusID -> Flight.StatusLuggage.StatusLuggageID
+Flight.Luggage.PersonID -> Person.Person.PersonID
+Flight.Ticket.FlightID -> Flight.Flight.FlightID
+Flight.Ticket.FlightScheduleID -> Flight.FlightSchedule.FlightScheduleID
+Flight.Ticket.TicketTypeID -> Flight.TicketType.TicketTypeID
+Flight.Ticket.PersonID -> Person.Person.PersonID
+Person.Employee_EmployeeRole.EmployeeRoleID -> Person.EmployeeRole.EmployeeRoleID
+Person.Employee_EmployeeRole.EmployeeID -> Person.Person.PersonID
+Person.Employee_StatusEmployee.EmployeeID -> Person.Person.PersonID
+Person.Employee_StatusEmployee.StatusEmployeeID -> Person.StatusEmployee.StatusEmployeeID
+Person.Person.Nationality -> Flight.Country.CountryID
+Person.Person.BloodType -> Person.BloodType.BloodTypeID
+Person.Person.DocumentTypeID -> Person.DocumentType.DocumentTypeID
+
 
 Flight: {
 
@@ -76,6 +107,7 @@ Flight: {
 		LuggageTypeID: int {constraint: primary_key}
     	LuggageTypeName: varchar(100) {constraint: unique}
     	Description: varchar(200)
+		Cost: money
 	}
 	StatusLuggage: {
 		shape: sql_table      
@@ -141,9 +173,6 @@ Airport: {
 		StatusPlaneID: int {constraint: foreign_key}
 		AdmissionDate: date
 		RetirementDate: date
-		SeatingCapacityHigh: int
-		SeatingCapacityMedium: int
-		SeatingCapacityLow: int
 		BelongingAirport: int {constraint: foreign_key}
 	}
 	StatusPlane: {
