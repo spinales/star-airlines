@@ -1,9 +1,11 @@
 -- All Foreign keys
 select schema_name(fk_tab.schema_id) + '.' + fk_tab.name as foreign_table,
-    '>-' as rel,
+    '->' as rel,
     schema_name(pk_tab.schema_id) + '.' + pk_tab.name as primary_table,
     substring(column_names, 1, len(column_names)-1) as [fk_columns],
-    fk.name as fk_constraint_name
+    fk.name as fk_constraint_name,
+    schema_name(fk_tab.schema_id) + '.' + fk_tab.name +'.'+substring(column_names, 1, len(column_names)-1)+
+    ' -> ' + schema_name(pk_tab.schema_id) + '.' + pk_tab.name--+ '.' + substring(column_names, 1, len(column_names)-1)
 from sys.foreign_keys fk
     inner join sys.tables fk_tab
         on fk_tab.object_id = fk.parent_object_id
@@ -44,7 +46,7 @@ SELECT *
 SELECT *
   FROM INFORMATION_SCHEMA.ROUTINES
  WHERE ROUTINE_TYPE = 'PROCEDURE'
-    AND ROUTINES.ROUTINE_NAME LIKE 'sp%LuggageStatus%';
+    AND ROUTINES.ROUTINE_NAME LIKE 'sp%';
 
 -- users in database
 Select
@@ -65,3 +67,9 @@ from    sys.database_principals princ
 left join
         sys.database_permissions perm
 on      perm.grantee_principal_id = princ.principal_id
+
+-- query history
+SELECT t.[text]
+FROM sys.dm_exec_cached_plans AS p
+CROSS APPLY sys.dm_exec_sql_text(p.plan_handle) AS t
+WHERE t.[text] LIKE N'%something unique about your query%';
