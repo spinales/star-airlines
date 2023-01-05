@@ -2765,6 +2765,51 @@ BEGIN
 END;
 GO
 
+DROP PROCEDURE IF EXISTS [Flight].[spGetStatusLuggage];
+GO
+CREATE PROCEDURE [Flight].[spGetStatusLuggage]
+AS
+    BEGIN
+        SET NOCOUNT, XACT_ABORT ON;
+        SET ANSI_NULLS ON;
+        SET QUOTED_IDENTIFIER OFF;
+        BEGIN TRANSACTION;
+        SELECT
+             [StatusLuggageID] = [SL].[StatusLuggageID]
+            ,[StatusLuggageName] = [SL].[StatusLuggageName]
+            ,[Description] = [SL].[Description]
+        FROM
+            [Flight].[StatusLuggage] AS [SL];
+        COMMIT TRANSACTION;
+    END;
+go
+
+DROP PROCEDURE IF EXISTS [Flight].[spUpdateLuggageType];
+GO
+CREATE PROCEDURE [Flight].[spUpdateLuggageType] (
+     @LuggageTypeID int
+    ,@LuggageTypeName varchar(100)
+    ,@Description varchar(200)
+)
+AS
+    BEGIN
+        SET NOCOUNT, XACT_ABORT ON;
+        SET ANSI_NULLS ON;
+        SET QUOTED_IDENTIFIER OFF;
+        BEGIN TRANSACTION;
+        UPDATE
+            [Flight].[LuggageType] WITH (UPDLOCK, SERIALIZABLE)
+        SET
+             [LuggageTypeName] = @LuggageTypeName
+            ,[Description] = @Description
+        WHERE
+            [LuggageTypeID] = @LuggageTypeID;
+
+        COMMIT TRANSACTION;
+    END;
+go
+
+
 /*
 Full text search
 */

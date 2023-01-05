@@ -522,27 +522,31 @@ GRANT EXECUTE ON OBJECT:: Flight.spUpdateLuggage
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spGetLuggage
-    TO  [sales_person];
+    TO  [technician];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchLuggageByFlightScheduleID
-    TO  [sales_person];
+    TO  [technician];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchLuggageByLuggageID
-    TO  [sales_person];
+    TO  [technician];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchLuggageByLuggageStatusID
-    TO  [sales_person];
+    TO  [technician];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchLuggageByLuggageTypeID
-    TO  [sales_person];
+    TO  [technician];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchLuggageByPersonID
-    TO  [sales_person];
+    TO  [technician];
+GO
+
+GRANT EXECUTE ON OBJECT:: Flight.spGetStatusLuggage
+    TO  [technician];
 GO
 /*
 semi_owner
@@ -552,9 +556,9 @@ GO
 
 ALTER ROLE db_owner add member semi_owner;
 
-DENY DELETE ON SCHEMA :: Person TO [public];
+DENY DELETE ON SCHEMA :: Person TO [semi_owner];
 GO
-DENY DELETE ON SCHEMA :: Flight TO [public];
+DENY DELETE ON SCHEMA :: Flight TO [semi_owner];
 GO
-DENY DELETE ON SCHEMA :: Airport TO [public];
+DENY DELETE ON SCHEMA :: Airport TO [semi_owner];
 GO
