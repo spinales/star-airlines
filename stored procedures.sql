@@ -1,13 +1,17 @@
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightByFlightType
 GO
-CREATE PROCEDURE Flight.spSearchFlightByFlightType @FlightType int
+CREATE PROCEDURE Flight.spSearchFlightByFlightType(
+    @FlightType int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM Flight.Flight
     WHERE Flight.Flight.FlightTypeID = @FlightType;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightByRangeOfCost;
@@ -20,22 +24,28 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.Flight
-WHERE Flight.FlightCost >= @Min
-  AND Flight.FlightCost <= @Max;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.Flight
+    WHERE Flight.FlightCost >= @Min
+      AND Flight.FlightCost <= @Max;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightByDestiny;
 GO
-CREATE PROCEDURE Flight.spSearchFlightByDestiny @DestinationID int
+CREATE PROCEDURE Flight.spSearchFlightByDestiny (
+    @DestinationID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.Flight
-Where Flight.DestinationID = @DestinationID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.Flight
+    Where Flight.DestinationID = @DestinationID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchTicketByClientID
@@ -45,33 +55,43 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.Ticket
-WHERE Ticket.PersonID = @ClientID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.Ticket
+    WHERE Ticket.PersonID = @ClientID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchPlaneByModelID;
 GO
-CREATE PROCEDURE Airport.spSearchPlaneByModelID @ModelID int
+CREATE PROCEDURE Airport.spSearchPlaneByModelID (
+    @ModelID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Airport.Plane
-WHERE Plane.ModelID = @ModelID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Airport.Plane
+    WHERE Plane.ModelID = @ModelID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightScheduleByFlight;
 GO
-CREATE PROCEDURE Flight.spSearchFlightScheduleByFlight @FlightID int
+CREATE PROCEDURE Flight.spSearchFlightScheduleByFlight (
+    @FlightID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.FlightSchedule
-WHERE FlightSchedule.FlightID = @FlightID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.FlightSchedule
+    WHERE FlightSchedule.FlightID = @FlightID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightScheduleByDestiny;
@@ -81,82 +101,94 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-Declare
-    @IDs Table
-         (
-             id INT
-         );
-Insert Into @IDs (id) (SELECT Flight.Flight.FlightID
-                       From Flight.Flight
-                       WHERE Flight.DestinationID = @DestinationID);
+    BEGIN TRANSACTION;
+    Declare @IDs Table
+             ( id INT );
+    Insert Into @IDs (id) (SELECT Flight.Flight.FlightID
+                           From Flight.Flight
+                           WHERE Flight.DestinationID = @DestinationID);
 
-SELECT *
-FROM Flight.FlightSchedule
-WHERE FlightSchedule.FlightScheduleID IN (SELECT id from @IDs);
+    SELECT *
+    FROM Flight.FlightSchedule
+    WHERE FlightSchedule.FlightScheduleID IN (SELECT id from @IDs);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchFlightScheduleByRangeOfDate;
 GO
-CREATE PROCEDURE Flight.spSearchFlightScheduleByRangeOfDate @StartDate DATETIME,
-                                                            @EndDate DATETIME
+CREATE PROCEDURE Flight.spSearchFlightScheduleByRangeOfDate (
+    @StartDate DATETIME,
+    @EndDate DATETIME
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.FlightSchedule
-WHERE Flight.FlightSchedule.ArrivalDate BETWEEN @StartDate AND @EndDate;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.FlightSchedule
+    WHERE Flight.FlightSchedule.ArrivalDate BETWEEN @StartDate AND @EndDate;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchPlaneByID
 GO
-CREATE PROCEDURE Airport.spSearchPlaneByID @PlaneID int
+CREATE PROCEDURE Airport.spSearchPlaneByID (
+    @PlaneID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Airport.Plane
-WHERE Plane.PlaneID = @PlaneID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Airport.Plane
+    WHERE Plane.PlaneID = @PlaneID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchAirportByState
 GO
--- Create the stored procedure in the specified schema
-CREATE PROCEDURE Airport.spSearchAirportByState @StateID int
+CREATE PROCEDURE Airport.spSearchAirportByState (
+    @StateID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Airport.Plane
-WHERE Plane.StatusPlaneID = @StateID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Airport.Plane
+    WHERE Plane.StatusPlaneID = @StateID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Person.spSearchPersonByDocument
 GO
--- Create the stored procedure in the specified schema
-CREATE PROCEDURE Person.spSearchPersonByDocument @Document varchar(20)
-    -- add more stored procedure parameters here
+CREATE PROCEDURE Person.spSearchPersonByDocument (
+    @Document varchar(20)
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT  [PersonID] = [P].[PersonID]
-            ,[FirstName] = [P].[FirstName]
-            ,[LastName] = [P].[LastName]
-            ,[AdmissionDate] = [P].[AdmissionDate]
-            ,[Nationality] = [P].[Nationality]
-            ,[Gender] = [P].[Gender]
-            ,[Document] = [P].[Document]
-            ,[DocumentTypeID] = [P].[DocumentTypeID]
-            ,[PhoneNumber] = [P].[PhoneNumber]
-            ,[DOB] = [P].[DOB]
-            ,[BloodType] = [P].[BloodType]
-            ,[Direction] = [P].[Direction]
-            ,[Email] = [P].[Email]
-FROM Person.Person P
-WHERE P.Document = @Document;
+    BEGIN TRANSACTION;
+    SELECT  [PersonID] = [P].[PersonID]
+                ,[FirstName] = [P].[FirstName]
+                ,[LastName] = [P].[LastName]
+                ,[AdmissionDate] = [P].[AdmissionDate]
+                ,[Nationality] = [P].[Nationality]
+                ,[Gender] = [P].[Gender]
+                ,[Document] = [P].[Document]
+                ,[DocumentTypeID] = [P].[DocumentTypeID]
+                ,[PhoneNumber] = [P].[PhoneNumber]
+                ,[DOB] = [P].[DOB]
+                ,[BloodType] = [P].[BloodType]
+                ,[Direction] = [P].[Direction]
+                ,[Email] = [P].[Email]
+    FROM Person.Person P
+    WHERE P.Document = @Document;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Person.spSearchEmployeeByRole
@@ -166,47 +198,50 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT  [PersonID] = [P].[PersonID]
-            ,[FirstName] = [P].[FirstName]
-            ,[LastName] = [P].[LastName]
-            ,[AdmissionDate] = [P].[AdmissionDate]
-            ,[Nationality] = [P].[Nationality]
-            ,[Gender] = [P].[Gender]
-            ,[Document] = [P].[Document]
-            ,[DocumentTypeID] = [P].[DocumentTypeID]
-            ,[PhoneNumber] = [P].[PhoneNumber]
-            ,[DOB] = [P].[DOB]
-            ,[BloodType] = [P].[BloodType]
-            ,[Direction] = [P].[Direction]
-            ,[Email] = [P].[Email]
-FROM Person.Person P
-         INNER JOIN Person.Employee_EmployeeRole on Person.Employee_EmployeeRole.EmployeeID = P.PersonID
-WHERE Person.Employee_EmployeeRole.EmployeeRoleID = @RoleID;
+    BEGIN TRANSACTION;
+    SELECT  [PersonID] = [P].[PersonID]
+                ,[FirstName] = [P].[FirstName]
+                ,[LastName] = [P].[LastName]
+                ,[AdmissionDate] = [P].[AdmissionDate]
+                ,[Nationality] = [P].[Nationality]
+                ,[Gender] = [P].[Gender]
+                ,[Document] = [P].[Document]
+                ,[DocumentTypeID] = [P].[DocumentTypeID]
+                ,[PhoneNumber] = [P].[PhoneNumber]
+                ,[DOB] = [P].[DOB]
+                ,[BloodType] = [P].[BloodType]
+                ,[Direction] = [P].[Direction]
+                ,[Email] = [P].[Email]
+    FROM Person.Person P
+             INNER JOIN Person.Employee_EmployeeRole on Person.Employee_EmployeeRole.EmployeeID = P.PersonID
+    WHERE Person.Employee_EmployeeRole.EmployeeRoleID = @RoleID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Person.spSearchAllEmployees
 GO
 CREATE PROCEDURE Person.spSearchAllEmployees
-    -- @param1  int
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT  [PersonID] = [P].[PersonID]
-            ,[FirstName] = [P].[FirstName]
-            ,[LastName] = [P].[LastName]
-            ,[AdmissionDate] = [P].[AdmissionDate]
-            ,[Nationality] = [P].[Nationality]
-            ,[Gender] = [P].[Gender]
-            ,[Document] = [P].[Document]
-            ,[DocumentTypeID] = [P].[DocumentTypeID]
-            ,[PhoneNumber] = [P].[PhoneNumber]
-            ,[DOB] = [P].[DOB]
-            ,[BloodType] = [P].[BloodType]
-            ,[Direction] = [P].[Direction]
-            ,[Email] = [P].[Email]
-FROM Person.Person P
+    BEGIN TRANSACTION;
+    SELECT  [PersonID] = [P].[PersonID]
+                ,[FirstName] = [P].[FirstName]
+                ,[LastName] = [P].[LastName]
+                ,[AdmissionDate] = [P].[AdmissionDate]
+                ,[Nationality] = [P].[Nationality]
+                ,[Gender] = [P].[Gender]
+                ,[Document] = [P].[Document]
+                ,[DocumentTypeID] = [P].[DocumentTypeID]
+                ,[PhoneNumber] = [P].[PhoneNumber]
+                ,[DOB] = [P].[DOB]
+                ,[BloodType] = [P].[BloodType]
+                ,[Direction] = [P].[Direction]
+                ,[Email] = [P].[Email]
+    FROM Person.Person P
          INNER JOIN Person.Employee_EmployeeRole on Person.Employee_EmployeeRole.EmployeeID = P.PersonID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Person.spSearchAllPersons
@@ -216,91 +251,97 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
+    Declare @IDs Table ( id INT );
+    Insert Into @IDs (id) (SELECT P.PersonID
+       FROM Person.Person P
+                INNER JOIN Person.Employee_EmployeeRole
+                           on Person.Employee_EmployeeRole.EmployeeID = P.PersonID);
 
-Declare
-    @IDs Table
-         (
-             id INT
-         );
-Insert Into @IDs (id) (SELECT P.PersonID
-                       FROM Person.Person P
-                                INNER JOIN Person.Employee_EmployeeRole
-                                           on Person.Employee_EmployeeRole.EmployeeID = P.PersonID);
-
-SELECT  [PersonID] = [P].[PersonID]
-            ,[FirstName] = [P].[FirstName]
-            ,[LastName] = [P].[LastName]
-            ,[AdmissionDate] = [P].[AdmissionDate]
-            ,[Nationality] = [P].[Nationality]
-            ,[Gender] = [P].[Gender]
-            ,[Document] = [P].[Document]
-            ,[DocumentTypeID] = [P].[DocumentTypeID]
-            ,[PhoneNumber] = [P].[PhoneNumber]
-            ,[DOB] = [P].[DOB]
-            ,[BloodType] = [P].[BloodType]
-            ,[Direction] = [P].[Direction]
-            ,[Email] = [P].[Email]
-FROM Person.Person P
-WHERE P.PersonID NOT IN (SELECT id from @IDs);
+    SELECT  [PersonID] = [P].[PersonID]
+                ,[FirstName] = [P].[FirstName]
+                ,[LastName] = [P].[LastName]
+                ,[AdmissionDate] = [P].[AdmissionDate]
+                ,[Nationality] = [P].[Nationality]
+                ,[Gender] = [P].[Gender]
+                ,[Document] = [P].[Document]
+                ,[DocumentTypeID] = [P].[DocumentTypeID]
+                ,[PhoneNumber] = [P].[PhoneNumber]
+                ,[DOB] = [P].[DOB]
+                ,[BloodType] = [P].[BloodType]
+                ,[Direction] = [P].[Direction]
+                ,[Email] = [P].[Email]
+    FROM Person.Person P
+    WHERE P.PersonID NOT IN (SELECT id from @IDs);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchPlaneByBrand
 GO
-
-CREATE PROCEDURE Airport.spSearchPlaneByBrand @BrandID int
+CREATE PROCEDURE Airport.spSearchPlaneByBrand (
+    @BrandID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
+    Declare
+        @IDs Table
+             (
+                 id INT
+             );
+    Insert Into @IDs (id) (SELECT Model.ModelID
+                           FROM Airport.Model
+                           Where Model.BrandID = @BrandID);
 
-Declare
-    @IDs Table
-         (
-             id INT
-         );
-Insert Into @IDs (id) (SELECT Model.ModelID
-                       FROM Airport.Model
-                       Where Model.BrandID = @BrandID);
-
-SELECT *
-FROM Airport.Plane
-WHERE Plane.ModelID IN (SELECT id from @IDs);
+    SELECT *
+    FROM Airport.Plane
+    WHERE Plane.ModelID IN (SELECT id from @IDs);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spAddAirport
 GO
-CREATE PROCEDURE Airport.spAddAirport @AirportName varchar(200),
-                                      @DestinationID int,
-                                      @Direction varchar(250),
-                                      @AirportTypeID int
+CREATE PROCEDURE Airport.spAddAirport (
+    @AirportName varchar(200),
+    @DestinationID int,
+    @Direction varchar(250),
+    @AirportTypeID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-INSERT INTO Airport.Airport
-    (AirportName, DestinationID, Direction, AirportTypeID)
-VALUES (@AirportName, @DestinationID, @Direction, @AirportTypeID);
+    BEGIN TRANSACTION;
+    INSERT INTO Airport.Airport
+        (AirportName, DestinationID, Direction, AirportTypeID)
+    VALUES (@AirportName, @DestinationID, @Direction, @AirportTypeID);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spUpdateAirport
 GO
-CREATE PROCEDURE Airport.spUpdateAirport @AirportID int,
-                                         @AirportName varchar(200),
-                                         @DestinationID int,
-                                         @Direction varchar(250),
-                                         @AirportTypeID int
+CREATE PROCEDURE Airport.spUpdateAirport (
+    @AirportID int,
+    @AirportName varchar(200),
+    @DestinationID int,
+    @Direction varchar(250),
+    @AirportTypeID int
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE Airport.Airport
     WITH (UPDLOCK, SERIALIZABLE)
-SET AirportName   = @AirportName,
-    DestinationID = @DestinationID,
-    Direction     = @Direction,
-    AirportTypeID = @AirportTypeID
-WHERE Airport.AirportID = @AirportID
-GO
+    SET AirportName   = @AirportName,
+        DestinationID = @DestinationID,
+        Direction     = @Direction,
+        AirportTypeID = @AirportTypeID
+    WHERE Airport.AirportID = @AirportID
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchAirportByID
@@ -310,47 +351,57 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Airport.Airport
-Where Airport.AirportID = @AirportID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Airport.Airport
+    Where Airport.AirportID = @AirportID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spAddDestination
 GO
-CREATE PROCEDURE Flight.spAddDestination @CountryID int,
-                                         @DestinationName varchar(100),
-                                         @Acronym varchar(4),
-                                         @Latitude NUMERIC(10, 8),
-                                         @Longitude NUMERIC(11, 8)
+CREATE PROCEDURE Flight.spAddDestination (
+    @CountryID int,
+    @DestinationName varchar(100),
+    @Acronym varchar(4),
+    @Latitude NUMERIC(10, 8),
+    @Longitude NUMERIC(11, 8)
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-INSERT INTO Flight.Destination
-    (CountryID, DestinationName, Acronym, Latitude, Longitude)
-VALUES (@CountryID, @DestinationName, @Acronym, @Latitude, @Longitude);
+    BEGIN TRANSACTION;
+    INSERT INTO Flight.Destination
+        (CountryID, DestinationName, Acronym, Latitude, Longitude)
+    VALUES (@CountryID, @DestinationName, @Acronym, @Latitude, @Longitude);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spUpdateDestination
 GO
-CREATE PROCEDURE Flight.spUpdateDestination @DestinationID int,
-                                            @CountryID int,
-                                            @DestinationName varchar(100),
-                                            @Acronym varchar(4),
-                                            @Latitude NUMERIC(10, 8),
-                                            @Longitude NUMERIC(11, 8)
+CREATE PROCEDURE Flight.spUpdateDestination (
+    @DestinationID int,
+    @CountryID int,
+    @DestinationName varchar(100),
+    @Acronym varchar(4),
+    @Latitude NUMERIC(10, 8),
+    @Longitude NUMERIC(11, 8)
+)
 AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-UPDATE Flight.Destination
-WITH (UPDLOCK, SERIALIZABLE)
-SET CountryID       = @CountryID,
-    DestinationName = @DestinationName,
-    Acronym         = @Acronym,
-    Latitude        = @Latitude,
-    Longitude       = @Longitude
-WHERE Destination.DestinationID = @DestinationID;
+    BEGIN TRANSACTION;
+    UPDATE Flight.Destination
+    WITH (UPDLOCK, SERIALIZABLE)
+    SET CountryID       = @CountryID,
+        DestinationName = @DestinationName,
+        Acronym         = @Acronym,
+        Latitude        = @Latitude,
+        Longitude       = @Longitude
+    WHERE Destination.DestinationID = @DestinationID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchDestinationByID
@@ -360,9 +411,11 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.Destination
-WHERE Destination.DestinationID = @DestinationID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.Destination
+    WHERE Destination.DestinationID = @DestinationID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spAddCountry
@@ -377,9 +430,11 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-INSERT INTO Flight.Country
-    (ISO2, ISO3, CurrencyName, Latitude, Longitude, CountryName)
-VALUES (@ISO2, @ISO3, @CurrencyName, @Latitude, @Longitude, @CountryName);
+    BEGIN TRANSACTION;
+    INSERT INTO Flight.Country
+        (ISO2, ISO3, CurrencyName, Latitude, Longitude, CountryName)
+    VALUES (@ISO2, @ISO3, @CurrencyName, @Latitude, @Longitude, @CountryName);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spUpdateCountry
@@ -395,15 +450,17 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-UPDATE Flight.Country
-WITH (UPDLOCK, SERIALIZABLE)
-SET ISO2         = @ISO2,
-    ISO3         = @ISO3,
-    CurrencyName = @CurrencyName,
-    Latitude     = @Latitude,
-    Longitude    = @Longitude,
-    CountryName  = @CountryName
-WHERE Country.CountryID = @CountryID;
+    BEGIN TRANSACTION;
+    UPDATE Flight.Country
+    WITH (UPDLOCK, SERIALIZABLE)
+    SET ISO2         = @ISO2,
+        ISO3         = @ISO3,
+        CurrencyName = @CurrencyName,
+        Latitude     = @Latitude,
+        Longitude    = @Longitude,
+        CountryName  = @CountryName
+    WHERE Country.CountryID = @CountryID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Flight.spSearchCountryByID
@@ -413,9 +470,11 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Flight.Country
-WHERE CountryID = @CountryID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Flight.Country
+    WHERE CountryID = @CountryID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spAddAirportType
@@ -426,9 +485,11 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-INSERT INTO Airport.AirportType
-    ([AirportTypeName], [Description])
-VALUES (@AirportTypeName, @Description);
+    BEGIN TRANSACTION;
+    INSERT INTO Airport.AirportType
+        ([AirportTypeName], [Description])
+    VALUES (@AirportTypeName, @Description);
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spUpdateAirportType
@@ -440,11 +501,13 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-UPDATE Airport.AirportType
-WITH (UPDLOCK, SERIALIZABLE)
-SET [AirportTypeName] = @AirportTypeName,
-    [Description]     = @Description
-WHERE AirportTypeID = @AirportTypeID;
+    BEGIN TRANSACTION;
+    UPDATE Airport.AirportType
+    WITH (UPDLOCK, SERIALIZABLE)
+    SET [AirportTypeName] = @AirportTypeName,
+        [Description]     = @Description
+    WHERE AirportTypeID = @AirportTypeID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spSearchAirportTypeByID
@@ -454,9 +517,11 @@ AS
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-SELECT *
-FROM Airport.AirportType
-WHERE AirportType.AirportTypeID = @AirportTypeID;
+    BEGIN TRANSACTION;
+    SELECT *
+    FROM Airport.AirportType
+    WHERE AirportType.AirportTypeID = @AirportTypeID;
+    COMMIT TRANSACTION;
 GO
 
 DROP PROCEDURE IF EXISTS Airport.spAddPlane
@@ -472,6 +537,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Airport].[Plane] ( [ModelID]
                                   , [SeatingCapacity]
                                   , [StatusPlaneID]
@@ -484,6 +550,7 @@ BEGIN
            , @AdmissionDate
            , @RetirementDate
            , @BelongingAirport);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -503,6 +570,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Airport].[Plane] WITH (UPDLOCK, SERIALIZABLE)
     SET [ModelID]               = @ModelID
@@ -512,6 +580,7 @@ BEGIN
       , [RetirementDate]        = @RetirementDate
       , [BelongingAirport]      = @BelongingAirport
     WHERE [PlaneID] = @PlaneID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -525,15 +594,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Airport].[Plane] AS [P]
     WHERE [P].[PlaneID] = @PlaneID
+    COMMIT TRANSACTION;
 END;
 GO
-
-/*
-    -- faltan por probar
-*/
 
 DROP PROCEDURE IF EXISTS Flight.spAddFlightBenefit
 GO
@@ -547,12 +614,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[FlightBenefit] ( [FlightBenefitName]
                                          , [Description]
                                          , [Cost])
     VALUES ( @FlightBenefitName
            , @Description
            , @Cost);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -569,12 +638,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[FlightBenefit] WITH (UPDLOCK, SERIALIZABLE)
     SET [FlightBenefitName] = @FlightBenefitName
       , [Description]       = @Description
       , [Cost]              = @Cost
     WHERE [FlightBenefitID] = @FlightBenefitID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -588,9 +659,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[FlightBenefit] AS [FB]
     WHERE [FB].[FlightBenefitID] = @FlightBenefitID
+    COMMIT TRANSACTION;
 
 END;
 GO
@@ -606,10 +679,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[FlightType] ( [FlightTypeName]
                                       , [Description])
     VALUES ( @FlightTypeName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -625,11 +700,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[FlightType] WITH (UPDLOCK, SERIALIZABLE)
     SET [FlightTypeName] = @FlightTypeName
       , [Description]    = @Description
     WHERE [FlightTypeID] = @FlightTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -644,13 +721,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     SELECT [FlightTypeID]   = [FT].[FlightTypeID]
          , [FlightTypeName] = [FT].[FlightTypeName]
          , [Description]    = [FT].[Description]
     FROM [Flight].[FlightType] AS [FT]
     WHERE [FT].[FlightTypeID] = @FlightTypeID
-
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -668,6 +745,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[TicketType] ( [TicketTypeName]
                                       , [Description]
                                       , [Cost]
@@ -678,6 +756,7 @@ BEGIN
            , @Cost
            , @FreeWeight
            , @Acronym);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -696,6 +775,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[TicketType] WITH (UPDLOCK, SERIALIZABLE)
     SET [TicketTypeName] = @TicketTypeName
@@ -704,6 +784,7 @@ BEGIN
       , [FreeWeight]     = @FreeWeight
       , [Acronym]        = @Acronym
     WHERE [TicketType].TicketTypeID = @TicketTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -717,9 +798,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[TicketType] AS [TT]
     WHERE [TT].[TicketTypeID] = @TicketTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -738,6 +821,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[FlightSchedule] ( [DepartureDate]
                                           , [ArrivalDate]
                                           , [PlaneID]
@@ -750,6 +834,7 @@ BEGIN
            , @Pilot
            , @CoPilot
            , @FlightID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -769,6 +854,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[FlightSchedule] WITH (UPDLOCK, SERIALIZABLE)
     SET [DepartureDate] = @DepartureDate
@@ -778,6 +864,7 @@ BEGIN
       , [CoPilot]       = @CoPilot
       , [FlightID]      = @FlightID
     WHERE [FlightScheduleID] = @FlightScheduleID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -791,9 +878,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[FlightSchedule] AS [FS]
     WHERE [FS].[FlightScheduleID] = @FlightScheduleID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -808,10 +897,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[StatusLuggage] ( [StatusLuggageName]
                                          , [Description])
     VALUES ( @StatusLuggageName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -827,11 +918,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[StatusLuggage] WITH (UPDLOCK, SERIALIZABLE)
     SET [StatusLuggageName] = @StatusLuggageName
       , [Description]       = @Description
     WHERE [StatusLuggageID] = @StatusLuggageID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -845,9 +938,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[StatusLuggage] AS [SL]
     WHERE [SL].[StatusLuggageID] = @StatusLuggageID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -859,8 +954,10 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[StatusLuggage] AS [SL]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -876,12 +973,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Airport].[Brand] ( [BrandName]
                                   , [Description]
                                   , [Email])
     VALUES ( @BrandName
            , @Description
            , @Email);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -898,12 +997,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Airport].[Brand] WITH (UPDLOCK, SERIALIZABLE)
     SET [BrandName]   = @BrandName
       , [Description] = @Description
       , [Email]       = @Email
     WHERE [BrandID] = @BrandID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -917,9 +1018,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Airport].[Brand] AS [B]
     WHERE [B].[BrandID] = @BrandID
+    COMMIT TRANSACTION;
 
 END;
 GO
@@ -936,12 +1039,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Airport].[Model] ( [ModelName]
                                   , [Description]
                                   , [BrandID])
     VALUES ( @ModelName
            , @Description
            , @BrandID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -958,12 +1063,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Airport].[Model] WITH (UPDLOCK, SERIALIZABLE)
     SET [ModelName]   = @ModelName
       , [Description] = @Description
       , [BrandID]     = @BrandID
     WHERE [ModelID] = @ModelID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -977,12 +1084,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [ModelID]     = [M].[ModelID]
          , [ModelName]   = [M].[ModelName]
          , [Description] = [M].[Description]
          , [BrandID]     = [M].[BrandID]
     FROM [Airport].[Model] AS [M]
     WHERE [M].[ModelID] = @ModelID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1007,6 +1116,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[Person] ( [FirstName]
                                   , [LastName]
                                   , [AdmissionDate]
@@ -1031,6 +1141,7 @@ BEGIN
            , @BloodType
            , @Direction
            , @Email);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1056,6 +1167,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[Person] WITH (UPDLOCK, SERIALIZABLE)
     SET [FirstName]      = @FirstName
@@ -1071,6 +1183,7 @@ BEGIN
       , [Direction]      = @Direction
       , [Email]          = @Email
     WHERE [PersonID] = @PersonID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1084,6 +1197,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [PersonID]       = [P].[PersonID]
          , [FirstName]      = [P].[FirstName]
          , [LastName]       = [P].[LastName]
@@ -1099,6 +1213,7 @@ BEGIN
          , [Email]          = [P].[Email]
     FROM [Person].[Person] AS [P]
     WHERE [P].[PersonID] = @PersonID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1113,10 +1228,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[DocumentType] ( [DocumentTypeName]
                                         , [Description])
     VALUES ( @DocumentTypeName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1132,11 +1249,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[DocumentType] WITH (UPDLOCK, SERIALIZABLE)
     SET [DocumentTypeName] = @DocumentTypeName
       , [Description]      = @Description
     WHERE [DocumentTypeID] = @DocumentTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1150,11 +1269,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [DocumentTypeID]   = [DT].[DocumentTypeID]
          , [DocumentTypeName] = [DT].[DocumentTypeName]
          , [Description]      = [DT].[Description]
     FROM [Person].[DocumentType] AS [DT]
     WHERE [DT].[DocumentTypeID] = @DocumentTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1169,10 +1290,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[EmployeeRole] ( [EmployeeRoleName]
                                         , [Description])
     VALUES ( @EmployeeRoleName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1188,11 +1311,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[EmployeeRole] WITH (UPDLOCK, SERIALIZABLE)
     SET [EmployeeRoleName] = @EmployeeRoleName
       , [Description]      = @Description
     WHERE [EmployeeRoleID] = @EmployeeRoleID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1206,9 +1331,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Person].[EmployeeRole] AS [ER]
     WHERE [ER].[EmployeeRoleID] = @EmployeeRoleID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1227,6 +1354,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[Flight] ( [DestinationID]
                                   , [DestinationAirportID]
                                   , [TravelDistance]
@@ -1239,6 +1367,7 @@ BEGIN
            , @FlightCost
            , @TravelDuration
            , @FlightTypeID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1258,6 +1387,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[Flight] WITH (UPDLOCK, SERIALIZABLE)
     SET [DestinationID]        = @DestinationID
@@ -1267,6 +1397,7 @@ BEGIN
       , [TravelDuration]       = @TravelDuration
       , [FlightTypeID]         = @FlightTypeID
     WHERE [FlightID] = @FlightID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1280,9 +1411,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT *
     FROM [Flight].[Flight] AS [F]
     WHERE [F].[FlightID] = @FlightID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1297,11 +1430,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [FlightTypeID]   = [FT].[FlightTypeID]
          , [FlightTypeName] = [FT].[FlightTypeName]
          , [Description]    = [FT].[Description]
     FROM [Flight].[FlightType] AS [FT]
     WHERE [FT].[FlightTypeID] = @FlightTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1313,10 +1448,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [FlightTypeID]   = [FT].[FlightTypeID]
          , [FlightTypeName] = [FT].[FlightTypeName]
          , [Description]    = [FT].[Description]
     FROM [Flight].[FlightType] AS [FT]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1336,6 +1473,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[Flight] WITH (UPDLOCK, SERIALIZABLE)
     SET [DestinationID]        = @DestinationID
@@ -1345,6 +1483,7 @@ BEGIN
       , [TravelDuration]       = @TravelDuration
       , [FlightTypeID]         = @FlightTypeID
     WHERE [FlightID] = @FlightID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1360,10 +1499,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[FlightType] ( [FlightTypeName]
                                       , [Description])
     VALUES ( @FlightTypeName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1379,12 +1520,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Airport].[Model] ( [ModelName]
                                   , [Description]
                                   , [BrandID])
     VALUES ( @ModelName
            , @Description
            , @BrandID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1401,12 +1544,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Airport].[Model] WITH (UPDLOCK, SERIALIZABLE)
     SET [ModelName]   = @ModelName
       , [Description] = @Description
       , [BrandID]     = @BrandID
     WHERE [ModelID] = @ModelID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1420,12 +1565,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [ModelID]     = [M].[ModelID]
          , [ModelName]   = [M].[ModelName]
          , [Description] = [M].[Description]
          , [BrandID]     = [M].[BrandID]
     FROM [Airport].[Model] AS [M]
     WHERE [M].[ModelID] = @ModelID
+    COMMIT TRANSACTION;
 
 END;
 GO
@@ -1438,11 +1585,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [ModelID]     = [M].[ModelID]
          , [ModelName]   = [M].[ModelName]
          , [Description] = [M].[Description]
          , [BrandID]     = [M].[BrandID]
     FROM [Airport].[Model] AS [M]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1458,11 +1607,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Airport].[StatusPlane] WITH (UPDLOCK, SERIALIZABLE)
     SET [StatusPlaneName] = @StatusPlaneName
       , [Description]     = @Description
     WHERE [StatusPlaneID] = @StatusPlaneID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1477,10 +1628,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Airport].[StatusPlane] ( [StatusPlaneName]
                                         , [Description])
     VALUES ( @StatusPlaneName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1494,11 +1647,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [StatusPlaneID]   = [SP].[StatusPlaneID]
          , [StatusPlaneName] = [SP].[StatusPlaneName]
          , [Description]     = [SP].[Description]
     FROM [Airport].[StatusPlane] AS [SP]
     WHERE [SP].[StatusPlaneID] = @StatusPlaneID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1510,10 +1665,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [StatusPlaneID]   = [SP].[StatusPlaneID]
          , [StatusPlaneName] = [SP].[StatusPlaneName]
          , [Description]     = [SP].[Description]
     FROM [Airport].[StatusPlane] AS [SP]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1530,12 +1687,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[LuggageType] WITH (UPDLOCK, SERIALIZABLE)
     SET [LuggageTypeName] = @LuggageTypeName
       , [Description]     = @Description
       , [Cost] = @Cost
     WHERE [LuggageTypeID] = @LuggageTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1551,10 +1710,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[LuggageType] ( [LuggageTypeName]
                                        , [Description], [Cost])
     VALUES ( @LuggageTypeName
            , @Description, @Cost);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1568,12 +1729,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageTypeID]   = [LT].[LuggageTypeID]
          , [LuggageTypeName] = [LT].[LuggageTypeName]
          , [Description]     = [LT].[Description]
          , [Cost]            = [LT].[Cost]
     FROM [Flight].[LuggageType] AS [LT]
     WHERE [LT].[LuggageTypeID] = @LuggageTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1585,11 +1748,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageTypeID]   = [LT].[LuggageTypeID]
          , [LuggageTypeName] = [LT].[LuggageTypeName]
          , [Description]     = [LT].[Description]
          , [Cost]            = [LT].[Cost]
     FROM [Flight].[LuggageType] AS [LT]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1605,11 +1770,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[BloodType] WITH (UPDLOCK, SERIALIZABLE)
     SET [BloodTypeName] = @BloodTypeName
       , [Description]   = @Description
     WHERE [BloodTypeID] = @BloodTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1624,10 +1791,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[BloodType] ( [BloodTypeName]
                                      , [Description])
     VALUES ( @BloodTypeName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1641,11 +1810,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [BloodTypeID]   = [BT].[BloodTypeID]
          , [BloodTypeName] = [BT].[BloodTypeName]
          , [Description]   = [BT].[Description]
     FROM [Person].[BloodType] AS [BT]
     WHERE [BT].[BloodTypeID] = @BloodTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1657,10 +1828,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [BloodTypeID]   = [BT].[BloodTypeID]
          , [BloodTypeName] = [BT].[BloodTypeName]
          , [Description]   = [BT].[Description]
     FROM [Person].[BloodType] AS [BT]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1675,10 +1848,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[StatusEmployee] ( [StatusEmployeeName]
                                           , [Description])
     VALUES ( @StatusEmployeeName
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1694,11 +1869,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[StatusEmployee] WITH (UPDLOCK, SERIALIZABLE)
     SET [StatusEmployeeName] = @StatusEmployeeName
       , [Description]        = @Description
     WHERE [StatusEmployeeID] = @StatusEmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1713,11 +1890,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [StatusEmployeeID]   = [SE].[StatusEmployeeID]
          , [StatusEmployeeName] = [SE].[StatusEmployeeName]
          , [Description]        = [SE].[Description]
     FROM [Person].[StatusEmployee] AS [SE]
     WHERE [SE].[StatusEmployeeID] = @StatusEmployeeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1726,14 +1905,15 @@ GO
 CREATE PROCEDURE [Person].[spGetStatusEmployee]
 AS
 BEGIN
-
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [StatusEmployeeID]   = [SE].[StatusEmployeeID]
          , [StatusEmployeeName] = [SE].[StatusEmployeeName]
          , [Description]        = [SE].[Description]
     FROM [Person].[StatusEmployee] AS [SE]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1748,10 +1928,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Flight].[FlightBenefit_FlightType] ( [FlightBenefitID]
                                                     , [FlightTypeID])
     VALUES ( @FlightBenefitID
            , @FlightTypeID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1766,12 +1948,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Flight].[FlightBenefit_FlightType] WITH (UPDLOCK, SERIALIZABLE)
     SET [FlightBenefitID] = @FlightBenefitID
       , [FlightTypeID]    = @FlightTypeID
     WHERE [FlightBenefitID] = @FlightBenefitID
       AND [FlightTypeID] = @FlightTypeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1787,13 +1971,13 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     SELECT [FlightBenefitID] = [FBFT].[FlightBenefitID]
          , [FlightTypeID]    = [FBFT].[FlightTypeID]
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
     WHERE [FBFT].[FlightBenefitID] = @FlightBenefitID
       AND [FBFT].[FlightTypeID] = @FlightTypeID
-
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1808,11 +1992,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     SELECT [FlightBenefitID] = [FBFT].[FlightBenefitID]
          , [FlightTypeID]    = [FBFT].[FlightTypeID]
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
     WHERE [FBFT].[FlightBenefitID] = @FlightBenefitID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1827,11 +2012,12 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     SELECT [FlightBenefitID] = [FBFT].[FlightBenefitID]
          , [FlightTypeID]    = [FBFT].[FlightTypeID]
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
     WHERE [FBFT].[FlightTypeID] = @FlightTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1843,9 +2029,11 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [FlightBenefitID] = [FBFT].[FlightBenefitID]
          , [FlightTypeID]    = [FBFT].[FlightTypeID]
     FROM [Flight].[FlightBenefit_FlightType] AS [FBFT]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1863,6 +2051,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[Employee_EmployeeRole] ( [EmployeeID]
                                                  , [EmployeeRoleID]
                                                  , [StartDate]
@@ -1873,6 +2062,7 @@ BEGIN
            , @StartDate
            , @EndDate
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1890,6 +2080,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[Employee_EmployeeRole] WITH (UPDLOCK, SERIALIZABLE)
     SET [EmployeeID]     = @EmployeeID
@@ -1899,6 +2090,7 @@ BEGIN
       , [Description]    = @Description
     WHERE EmployeeID = @EmployeeID
       AND EmployeeRoleID = @EmployeeRoleID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1913,6 +2105,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]     = [EER].[EmployeeID]
          , [EmployeeRoleID] = [EER].[EmployeeRoleID]
          , [StartDate]      = [EER].[StartDate]
@@ -1921,6 +2114,7 @@ BEGIN
     FROM [Person].[Employee_EmployeeRole] AS [EER]
     WHERE EmployeeID = @EmployeeID
       AND EmployeeRoleID = @EmployeeRoleID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1934,6 +2128,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]     = [EER].[EmployeeID]
          , [EmployeeRoleID] = [EER].[EmployeeRoleID]
          , [StartDate]      = [EER].[StartDate]
@@ -1941,6 +2136,7 @@ BEGIN
          , [Description]    = [EER].[Description]
     FROM [Person].[Employee_EmployeeRole] AS [EER]
     WHERE EmployeeID = @EmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1954,6 +2150,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]     = [EER].[EmployeeID]
          , [EmployeeRoleID] = [EER].[EmployeeRoleID]
          , [StartDate]      = [EER].[StartDate]
@@ -1961,6 +2158,7 @@ BEGIN
          , [Description]    = [EER].[Description]
     FROM [Person].[Employee_EmployeeRole] AS [EER]
     WHERE EmployeeRoleID = @EmployeeRoleID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1972,12 +2170,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]     = [EER].[EmployeeID]
          , [EmployeeRoleID] = [EER].[EmployeeRoleID]
          , [StartDate]      = [EER].[StartDate]
          , [EndDate]        = [EER].[EndDate]
          , [Description]    = [EER].[Description]
     FROM [Person].[Employee_EmployeeRole] AS [EER];
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -1995,6 +2195,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     INSERT INTO [Person].[Employee_StatusEmployee] ( [EmployeeID]
                                                    , [StatusEmployeeID]
                                                    , [StartDate]
@@ -2005,6 +2206,7 @@ BEGIN
            , @StartDate
            , @EndDate
            , @Description);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2022,6 +2224,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     UPDATE
         [Person].[Employee_StatusEmployee] WITH (UPDLOCK, SERIALIZABLE)
     SET [EmployeeID]       = @EmployeeID
@@ -2031,6 +2234,7 @@ BEGIN
       , [Description]      = @Description
     WHERE EmployeeID = @EmployeeID
       AND StatusEmployeeID = @StatusEmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2045,6 +2249,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]       = [ESE].[EmployeeID]
          , [StatusEmployeeID] = [ESE].[StatusEmployeeID]
          , [StartDate]        = [ESE].[StartDate]
@@ -2053,6 +2258,7 @@ BEGIN
     FROM [Person].[Employee_StatusEmployee] AS [ESE]
     WHERE EmployeeID = @EmployeeID
       AND StatusEmployeeID = @StatusEmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2066,6 +2272,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]       = [ESE].[EmployeeID]
          , [StatusEmployeeID] = [ESE].[StatusEmployeeID]
          , [StartDate]        = [ESE].[StartDate]
@@ -2073,6 +2280,7 @@ BEGIN
          , [Description]      = [ESE].[Description]
     FROM [Person].[Employee_StatusEmployee] AS [ESE]
     WHERE EmployeeID = @EmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2086,6 +2294,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]       = [ESE].[EmployeeID]
          , [StatusEmployeeID] = [ESE].[StatusEmployeeID]
          , [StartDate]        = [ESE].[StartDate]
@@ -2093,6 +2302,7 @@ BEGIN
          , [Description]      = [ESE].[Description]
     FROM [Person].[Employee_StatusEmployee] AS [ESE]
     WHERE StatusEmployeeID = @StatusEmployeeID;
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2104,12 +2314,14 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [EmployeeID]       = [ESE].[EmployeeID]
          , [StatusEmployeeID] = [ESE].[StatusEmployeeID]
          , [StartDate]        = [ESE].[StartDate]
          , [EndDate]          = [ESE].[EndDate]
          , [Description]      = [ESE].[Description]
     FROM [Person].[Employee_StatusEmployee] AS [ESE];
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2128,6 +2340,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     DECLARE @Cost money;
 
     DECLARE @FreeWeight int = Flight.ufnCalculateTheAmountOFreeWeightRemaining(@PersonID, @FlightScheduleID, @TicketTypeID);
@@ -2145,6 +2358,7 @@ BEGIN
            , @Cost
            , @LuggageTypeID
            , @LuggageStatusID);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2165,7 +2379,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     DECLARE @FreeWeight int = Flight.ufnCalculateTheAmountOFreeWeightRemaining(@PersonID, @FlightScheduleID, @TicketTypeID);
     SET @Cost = Flight.ufnCalculateCostOfLuggage(@Weight, @LuggageTypeID, @FreeWeight)
 
@@ -2178,6 +2392,8 @@ BEGIN
       , [LuggageTypeID]    = @LuggageTypeID
       , [LuggageStatusID]  = @LuggageStatusID
     WHERE [LuggageID] = @LuggageID;
+    COMMIT TRANSACTION;
+
 END;
 GO
 
@@ -2189,6 +2405,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2197,6 +2414,7 @@ BEGIN
          , [LuggageTypeID]    = [L].[LuggageTypeID]
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2211,6 +2429,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2220,6 +2439,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[LuggageStatusID] = @LuggageStatusID
+    COMMIT TRANSACTION;
 
 END;
 GO
@@ -2234,6 +2454,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2243,6 +2464,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[LuggageTypeID] = @LuggageTypeID
+    COMMIT TRANSACTION;
 
 END;
 GO
@@ -2257,6 +2479,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2266,6 +2489,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[LuggageID] = @LuggageID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2279,6 +2503,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2288,6 +2513,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[PersonID] = @PersonID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2301,6 +2527,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [LuggageID]        = [L].[LuggageID]
          , [PersonID]         = [L].[PersonID]
          , [FlightScheduleID] = [L].[FlightScheduleID]
@@ -2310,6 +2537,7 @@ BEGIN
          , [LuggageStatusID]  = [L].[LuggageStatusID]
     FROM [Flight].[Luggage] AS [L]
     WHERE [L].[FlightScheduleID] = @FlightScheduleID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2327,6 +2555,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     DECLARE @Cost money = Flight.[ufnCalculateFinalCostOfTicket](@TicketTypeID, @FlightID, @PersonID,
                                                                  @FlightScheduleID);
 
@@ -2352,6 +2581,7 @@ BEGIN
            , @Cost
            , @FlightScheduleID
            , @SeatPlane);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2371,7 +2601,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
-
+    BEGIN TRANSACTION;
     SET @Cost = Flight.[ufnCalculateFinalCostOfTicket](@TicketTypeID, @FlightID, @PersonID, @FlightScheduleID);
 
     IF Flight.ufnValidateSeatIfAvailable(@FlightScheduleID, @SeatPlane) = 1
@@ -2388,6 +2618,8 @@ BEGIN
       , [FlightScheduleID] = @FlightScheduleID
       , [SeatPlane]        = @SeatPlane
     WHERE [TicketID] = @TicketID;
+    COMMIT TRANSACTION;
+
 END;
 GO
 
@@ -2401,6 +2633,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2410,6 +2643,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[FlightID] = @FlightID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2424,6 +2658,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2433,6 +2668,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[PersonID] = @PersonID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2446,6 +2682,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2455,6 +2692,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[TicketTypeID] = @TicketTypeID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2468,6 +2706,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2477,6 +2716,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[FlightScheduleID] = @FlightScheduleID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2490,6 +2730,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2499,6 +2740,7 @@ BEGIN
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
     WHERE [T].[TicketID] = @TicketID
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2510,6 +2752,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [TicketID]         = [T].[TicketID]
          , [FlightID]         = [T].[FlightID]
          , [PersonID]         = [T].[PersonID]
@@ -2518,6 +2761,7 @@ BEGIN
          , [FlightScheduleID] = [T].[FlightScheduleID]
          , [SeatPlane]        = [T].[SeatPlane]
     FROM [Flight].[Ticket] AS [T]
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2535,6 +2779,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT  [PersonID] = [P].[PersonID]
             ,[FirstName] = [P].[FirstName]
             ,[LastName] = [P].[LastName]
@@ -2550,6 +2795,7 @@ BEGIN
             ,[Email] = [P].[Email]
     FROM Person.Person P
     WHERE CONTAINS(FirstName, @FirstName);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2563,6 +2809,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [DestinationID] = [D].[DestinationID]
             ,[CountryID] = [D].[CountryID]
             ,[DestinationName] = [D].[DestinationName]
@@ -2571,6 +2818,7 @@ BEGIN
             ,[Longitude] = [D].[Longitude]
     FROM [Flight].[Destination] AS [D]
     WHERE CONTAINS(DestinationName, @DestinationName);
+    COMMIT TRANSACTION;
 END;
 GO
 
@@ -2584,6 +2832,7 @@ BEGIN
     SET NOCOUNT, XACT_ABORT ON;
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
+    BEGIN TRANSACTION;
     SELECT [CountryID] = [C].[CountryID]
             ,[ISO2] = [C].[ISO2]
             ,[ISO3] = [C].[ISO3]
@@ -2593,5 +2842,6 @@ BEGIN
             ,[CountryName] = [C].[CountryName]
     FROM [Flight].[Country] AS [C]
     WHERE CONTAINS(CountryName, @CountryName);
+    COMMIT TRANSACTION;
 END;
 GO
