@@ -562,3 +562,60 @@ DENY DELETE ON SCHEMA :: Flight TO [semi_owner];
 GO
 DENY DELETE ON SCHEMA :: Airport TO [semi_owner];
 GO
+
+/*
+usuarios
+*/
+CREATE LOGIN austinBrooks
+    WITH PASSWORD = '8fdKJl3$nlNv3049jsKK';
+CREATE USER usrAustinBrooks FOR LOGIN austinBrooks;
+--ALTER ROLE [public] ADD MEMBER usrAustinBrooks;
+GO
+
+CREATE LOGIN raphaelWatson
+    WITH PASSWORD = 'rpEu9pcHmS4EQ6qn';
+CREATE USER usrRaphaelWatson FOR LOGIN raphaelWatson;
+ALTER ROLE [sales_person] ADD MEMBER usrRaphaelWatson;
+GO
+
+CREATE LOGIN caseyElliott
+    WITH PASSWORD = 'WhyatVx3UUwjFmaN';
+CREATE USER usrCaseyElliott FOR LOGIN caseyElliott;
+ALTER ROLE [basic_reader] ADD MEMBER usrCaseyElliott;
+GO
+
+CREATE LOGIN stanleyFrank
+    WITH PASSWORD = 'M7Fcx8L8FFBPRkR4';
+CREATE USER usrStanleyFrank FOR LOGIN stanleyFrank;
+ALTER ROLE [hr] ADD MEMBER usrStanleyFrank;
+GO
+
+CREATE LOGIN raphaelWard
+    WITH PASSWORD = 'BSWKmdKhUcydV57W';
+CREATE USER usrRaphaelWard FOR LOGIN raphaelWard;
+ALTER ROLE [technician] ADD MEMBER usrRaphaelWard;
+GO
+
+CREATE LOGIN leeWaters
+    WITH PASSWORD = 'qCLJ4hsNc3uS46TP';
+CREATE USER usrLeeWaters FOR LOGIN leeWaters;
+ALTER ROLE [semi_owner] ADD MEMBER usrLeeWaters;
+GO
+
+CREATE LOGIN mitchellWilkerson
+    WITH PASSWORD = 'Hv6uFnJLcaRa83an';
+CREATE USER usrMitchellWilkerson FOR LOGIN mitchellWilkerson;
+ALTER ROLE [db_owner] ADD MEMBER usrMitchellWilkerson;
+GO
+
+CREATE LOGIN hannahWest
+    WITH PASSWORD = 'qWVrSu9kbvzuLLXL';
+CREATE USER usrHannahWest FOR LOGIN hannahWest;
+ALTER ROLE [semi_owner] ADD MEMBER usrHannahWest;
+GO
+
+CREATE LOGIN floraParsons
+    WITH PASSWORD = 'ztzZA6yrfH6YZxpj';
+CREATE USER usrFloraParsons FOR LOGIN floraParsons;
+ALTER ROLE [semi_owner] ADD MEMBER usrFloraParsons;
+GO
