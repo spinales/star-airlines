@@ -2,10 +2,7 @@ CREATE DATABASE StarAirlines;
 go
 use StarAirlines;
 
-/* 
-  
-*/
-
+/*  schemas */
 IF (
   NOT EXISTS (
     SELECT
@@ -40,8 +37,6 @@ END
 
 -- Statistics
 Alter DATABASE StarAirlines SET auto_create_statistics ON
-GO
-ALTER DATABASE StarAirlines SET auto_update_statistics ON
 GO
 
 -- Pais

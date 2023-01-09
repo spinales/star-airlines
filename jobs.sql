@@ -274,7 +274,24 @@ GO
 Statidictis
 */
 -- auto create
--- auto update
+EXEC msdb.dbo.sp_add_job
+    @job_name = N'weekly statistics update' ;
+GO
+EXEC msdb.dbo.sp_add_jobstep
+    @job_name = N'weekly statistics update',
+    @step_name = N'update statistics',
+    @subsystem = N'TSQL',
+    @command = N'EXEC sp_updatestats',
+    @retry_attempts = 5,
+    @retry_interval = 5 ;
+GO
+EXEC msdb.dbo.sp_attach_schedule
+   @job_name = N'weekly statistics update',
+   @schedule_name = N'RunWeekly';
+GO
+EXEC msdb.dbo.sp_add_jobserver
+    @job_name = N'weekly statistics update';
+GO
 
 /*
 check database integrity
