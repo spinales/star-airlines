@@ -1,6 +1,7 @@
 /*
 Database backups
 */
+use StarAirlines;
 DROP PROCEDURE IF EXISTS dbo.spWeeklyFullDataseBackup
 GO
 CREATE PROCEDURE dbo.spWeeklyFullDataseBackup
@@ -11,7 +12,7 @@ BEGIN
     SET QUOTED_IDENTIFIER OFF;
     DECLARE @Location nvarchar(100);
     SELECT @Location = CONCAT('C:\SQL Server Backups\StarAirlinesFull', CONVERT(date, GETDATE()), '.bak')
-    BACKUP DATABASE StarAirlines3
+    BACKUP DATABASE StarAirlines
     TO DISK = @Location
        WITH FORMAT,
           MEDIANAME = 'SQLServerBackups',
@@ -53,7 +54,7 @@ BEGIN
     SET QUOTED_IDENTIFIER OFF;
     DECLARE @Location nvarchar(100);
     SELECT @Location = CONCAT('C:\SQL Server Backups\StarAirlinesDiferential', CONVERT(date, GETDATE()), '.bak')
-    BACKUP DATABASE StarAirlines3
+    BACKUP DATABASE StarAirlines
        TO DISK = @Location
        WITH DIFFERENTIAL
 END;
@@ -69,7 +70,7 @@ BEGIN
     SET QUOTED_IDENTIFIER OFF;
     DECLARE @Location nvarchar(100);
     SELECT @Location = CONCAT('C:\SQL Server Backups\StarAirlinesLog', CONVERT(date, GETDATE()), 'T', REPLACE(Convert(Time(0), GetDate()),':','-'),'.bak');;
-    BACKUP LOG StarAirlines3
+    BACKUP LOG StarAirlines
         TO DISK =  @Location
 END;
 GO
@@ -102,7 +103,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Star Airlines Data Backup',
     @step_name = N'Set database to read only',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_ONLY',
+    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -126,7 +127,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Star Airlines Data Backup',
     @step_name = N'Set database to read write',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_WRITE',
+    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -154,7 +155,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Nightly StarAirlines Diferential Data Backup',
     @step_name = N'Set database to read only',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_ONLY',
+    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -170,7 +171,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Nightly StarAirlines Diferential Data Backup',
     @step_name = N'Set database to read write mode',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_WRITE',
+    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -197,7 +198,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Star Airlines Log Backup',
     @step_name = N'Set database to read only',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_ONLY',
+    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -213,7 +214,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Star Airlines Log Backup',
     @step_name = N'Set database to read write only',
     @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines3 SET READ_WRITE',
+    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
