@@ -2,6 +2,34 @@
 Database backups
 */
 use StarAirlines;
+DROP PROCEDURE IF EXISTS dbo.spWeeklyRebuildOfIndexes
+GO
+CREATE PROCEDURE dbo.spWeeklyRebuildOfIndexes
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @TableName VARCHAR(255)
+    DECLARE @sql NVARCHAR(500)
+    DECLARE @fillfactor INT
+    SET @fillfactor = 80
+    DECLARE TableCursor CURSOR FOR
+        SELECT QUOTENAME(OBJECT_SCHEMA_NAME([object_id]))+'.' + QUOTENAME(name) AS TableName
+        FROM sys.tables;
+
+    OPEN TableCursor
+        FETCH NEXT FROM TableCursor INTO @TableName
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            SET @sql = 'ALTER INDEX ALL ON ' + @TableName + ' REBUILD WITH (FILLFACTOR = ' + CONVERT(VARCHAR(3),@fillfactor) + ')'
+            EXEC (@sql)
+            FETCH NEXT FROM TableCursor INTO @TableName
+            END
+        CLOSE TableCursor
+    DEALLOCATE TableCursor
+END;
+GO
+
 DROP PROCEDURE IF EXISTS dbo.spWeeklyFullDataseBackup
 GO
 CREATE PROCEDURE dbo.spWeeklyFullDataseBackup
@@ -111,7 +139,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Star Airlines Data Backup',
     @step_name = N'Full Database backup',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spWeeklyFullDataseBackup',
+    @command = N'EXEC StarAirlines.dbo.spWeeklyFullDataseBackup',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -119,7 +147,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Star Airlines Data Backup',
     @step_name = N'Delete old database backups',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spDeleteOldDataseBackup',
+    @command = N'EXEC StarAirlines.dbo.spDeleteOldDataseBackup',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -163,7 +191,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Nightly StarAirlines Diferential Data Backup',
     @step_name = N'Do Diferential backup',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spDailyDiferentialDataseBackup',
+    @command = N'EXEC StarAirlines.dbo.spDailyDiferentialDataseBackup',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -206,7 +234,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Star Airlines Log Backup',
     @step_name = N'Do log backup',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spLogDataseBackup',
+    @command = N'EXEC StarAirlines.dbo.spLogDataseBackup',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -243,24 +271,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Maintance of Indexes' ,
     @step_name = N'Rebuild indexes',
     @subsystem = N'TSQL',
-    @command = N'DECLARE @TableName VARCHAR(255)
-        DECLARE @sql NVARCHAR(500)
-        DECLARE @fillfactor INT
-        SET @fillfactor = 80
-        DECLARE TableCursor CURSOR FOR
-        SELECT QUOTENAME(OBJECT_SCHEMA_NAME([object_id]))+''.'' + QUOTENAME(name) AS TableName
-        FROM sys.tables
-        OPEN TableCursor
-        FETCH NEXT FROM TableCursor INTO @TableName
-        WHILE @@FETCH_STATUS = 0
-        BEGIN
-        SET @sql = ''ALTER INDEX ALL ON '' + @TableName + '' REBUILD WITH (FILLFACTOR = '' + CONVERT(VARCHAR(3),@fillfactor) + '')''
-        EXEC (@sql)
-        FETCH NEXT FROM TableCursor INTO @TableName
-        END
-        CLOSE TableCursor
-        DEALLOCATE TableCursor
-        GO',
+    @command = N'EXEC StarAirlines.dbo.spWeeklyRebuildOfIndexes',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -282,7 +293,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'weekly statistics update',
     @step_name = N'update statistics',
     @subsystem = N'TSQL',
-    @command = N'EXEC sp_updatestats',
+    @command = N'USE StarAirlines; EXEC sp_updatestats',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -305,7 +316,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Database Integrity Revision',
     @step_name = N'Check database integrity',
     @subsystem = N'TSQL',
-    @command = N'DBCC CHECKDB',
+    @command = N'USE StarAirlines; DBCC CHECKDB',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -327,7 +338,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Backups History Cleanup',
     @step_name = N'Clear database backups history',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spMaintanceCleanBackpupHistory',
+    @command = N'EXEC StarAirlines.dbo.spMaintanceCleanBackpupHistory',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
@@ -335,7 +346,7 @@ EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Jobs History Cleanup',
     @step_name = N'Clear jobs history',
     @subsystem = N'TSQL',
-    @command = N'EXEC dbo.spMaintanceCleanJobHistory',
+    @command = N'EXEC StarAirlines.dbo.spMaintanceCleanJobHistory',
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
