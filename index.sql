@@ -11,10 +11,10 @@ GO
 
 DROP INDEX IF EXISTS UNQ_Person_FirstName ON Person.Person;
 CREATE UNIQUE INDEX UNQ_Person_FirstName ON Person.Person(FirstName);
-DROP INDEX IF EXISTS UNQ_Destination_DestinationName ON Flight.Destination;
-CREATE UNIQUE INDEX UNQ_Destination_DestinationName ON Flight.Destination(DestinationName);
-DROP INDEX IF EXISTS UNQ_Country_CountryName ON Flight.Country;
-CREATE UNIQUE INDEX UNQ_Country_CountryName ON Flight.Country(CountryName);
+DROP INDEX IF EXISTS UNQ_Destination_DestinationName ON [Geo].[Destination];
+CREATE UNIQUE INDEX UNQ_Destination_DestinationName ON [Geo].[Destination](DestinationName);
+DROP INDEX IF EXISTS UNQ_Country_CountryName ON [Geo].[Country];
+CREATE UNIQUE INDEX UNQ_Country_CountryName ON [Geo].[Country](CountryName);
 DROP INDEX IF EXISTS UNQ_Airport_AirportName ON Airport.Airport;
 CREATE UNIQUE INDEX UNQ_Airport_AirportName ON Airport.Airport(AirportName);
 GO
@@ -30,9 +30,9 @@ KEY INDEX UNQ_Person_FirstName ON StarAirlinesFTCat
 WITH CHANGE_TRACKING AUTO
 GO
 
--- DROP FULLTEXT INDEX ON Flight.Destination;
+-- DROP FULLTEXT INDEX ON [Geo].[Destination];
 -- GO
-CREATE FULLTEXT INDEX ON Flight.Destination
+CREATE FULLTEXT INDEX ON [Geo].[Destination]
 (
         DestinationName
         Language 1033                 --1033 is the LCID for US English
@@ -41,9 +41,9 @@ KEY INDEX UNQ_Destination_DestinationName ON StarAirlinesFTCat
 WITH CHANGE_TRACKING AUTO
 GO
 
--- DROP FULLTEXT INDEX ON Flight.Country;
+-- DROP FULLTEXT INDEX ON [Geo].[Country];
 -- GO
-CREATE FULLTEXT INDEX ON Flight.Country
+CREATE FULLTEXT INDEX ON [Geo].[Country]
 (
         CountryName
         Language 1033                 --1033 is the LCID for US English
@@ -167,10 +167,10 @@ CREATE NONCLUSTERED INDEX IDXNC_Plane_AdmissionDate
         OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF);
 GO
 
-DROP INDEX IF EXISTS IDXNC_Destination_CountryID ON Flight.Destination;
+DROP INDEX IF EXISTS IDXNC_Destination_CountryID ON [Geo].[Destination];
 GO
 CREATE NONCLUSTERED INDEX IDXNC_Destination_CountryID
-    ON Flight.Destination(CountryID)
+    ON [Geo].[Destination](CountryID)
     WITH (PAD_INDEX = OFF,
         STATISTICS_NORECOMPUTE = OFF,
         SORT_IN_TEMPDB = OFF,

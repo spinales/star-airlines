@@ -372,7 +372,7 @@ AS
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
-    INSERT INTO Flight.Destination
+    INSERT INTO [Geo].[Destination]
         (CountryID, DestinationName, Acronym, Latitude, Longitude)
     VALUES (@CountryID, @DestinationName, @Acronym, @Latitude, @Longitude);
     COMMIT TRANSACTION;
@@ -393,7 +393,7 @@ AS
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
-    UPDATE Flight.Destination
+    UPDATE [Geo].[Destination]
     WITH (UPDLOCK, SERIALIZABLE)
     SET CountryID       = @CountryID,
         DestinationName = @DestinationName,
@@ -413,7 +413,7 @@ AS
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
     SELECT *
-    FROM Flight.Destination
+    FROM [Geo].[Destination]
     WHERE Destination.DestinationID = @DestinationID;
     COMMIT TRANSACTION;
 GO
@@ -431,7 +431,7 @@ AS
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
-    INSERT INTO Flight.Country
+    INSERT INTO [Geo].[Country]
         (ISO2, ISO3, CurrencyName, Latitude, Longitude, CountryName)
     VALUES (@ISO2, @ISO3, @CurrencyName, @Latitude, @Longitude, @CountryName);
     COMMIT TRANSACTION;
@@ -451,7 +451,7 @@ AS
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
-    UPDATE Flight.Country
+    UPDATE [Geo].[Country]
     WITH (UPDLOCK, SERIALIZABLE)
     SET ISO2         = @ISO2,
         ISO3         = @ISO3,
@@ -472,7 +472,7 @@ AS
     SET QUOTED_IDENTIFIER OFF;
     BEGIN TRANSACTION;
     SELECT *
-    FROM Flight.Country
+    FROM [Geo].[Country]
     WHERE CountryID = @CountryID;
     COMMIT TRANSACTION;
 GO
