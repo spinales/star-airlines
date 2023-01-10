@@ -38,7 +38,7 @@ DROP VIEW IF EXISTS Airport.vPlane;
 GO
 CREATE VIEW Airport.vPlane AS
     SELECT P.PlaneID, M.ModelName AS Model, B.BrandName AS Brand, M.Description, SP.StatusPlaneName AS StatusPlane, P.AdmissionDate,
-           P.RetirementDate, P.SeatingCapacityHigh, P.SeatingCapacityMedium, P.SeatingCapacityLow,
+           P.RetirementDate,
            A.AirportName AS BelongingAirport
     FROM Airport.Plane P
     INNER JOIN Airport.Model M ON P.ModelID = M.ModelID
@@ -95,5 +95,22 @@ CREATE VIEW Flight.vBenefits AS
     FROM Flight.FlightBenefit_FlightType FFT
     INNER JOIN Flight.FlightType FT on FT.FlightTypeID = FFT.FlightTypeID
     INNER JOIN Flight.FlightBenefit FB on FB.FlightBenefitID = FFT.FlightBenefitID
+GO
+
+DROP VIEW IF EXISTS Flight.vFlightSchedule;
+GO
+CREATE VIEW Flight.vFlightSchedule AS
+    SELECT FS.FlightScheduleID, FS.DepartureDate, FS.ArrivalDate,
+           PP.FirstName + ' ' + PP.LastName AS Pilot, PcP.FirstName + ' ' + PcP.LastName AS CoPilot,
+           D.DestinationName AS City, C.CountryName AS Country, C.ISO2, C.ISO3, F.TravelDistance,
+           F.FlightCost AS Cost, FT.FlightTypeName AS FlightType
+    FROM Flight.FlightSchedule FS
+    INNER JOIN Person.Person PP on PP.PersonID = FS.Pilot
+    INNER JOIN Person.Person PcP on PcP.PersonID = FS.CoPilot
+    INNER JOIN Flight.Flight F ON FS.FlightID = F.FlightID
+    INNER JOIN Flight.Destination D ON F.DestinationID = D.DestinationID
+    INNER JOIN Flight.Country C ON C.CountryID = D.CountryID
+    INNER JOIN Airport.Airport A ON F.DestinationAirportID = A.AirportID
+    INNER JOIN Flight.FlightType FT ON F.FlightTypeID = FT.FlightTypeID
 GO
 
