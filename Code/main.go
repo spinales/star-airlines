@@ -33,6 +33,7 @@ func main() {
 
 	dsn := "sqlserver://spinales:123456789@localhost:1433?database=StarAirlines2"
 	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{
+		SkipDefaultTransaction: true,
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
 			NoLowerCase:   true, // skip the snake_casing of names
@@ -43,30 +44,31 @@ func main() {
 	}
 
 	// ParseCities()
-	CountryData(db)
-	StatusEmployeeData(db)
-	LuggageTypeData(db)
-	StatusLuggageData(db)
-	StatusPlaneData(db)
-	FlightTypeData(db)
-	FlightBenefitData(db)
-	BloodTypeData(db)
-	EmployeeRoleData(db)
-	DocumentTypeData(db)
-	AirportTypeData(db)
-	BrandData(db)
-	ModelData(db)
-	TicketTypeData(db)
-	PersonData(db)
-	AirportData(db)
-	FlightData(db)
-	PlaneData(db)
-	Employee_EmployeeRoleData(db)
-	Employee_StatusEmployeeData(db)
-	FlightBenefit_FlightTypeData(db)
-	FlightScheduleData(db)
-	LuggageData(db)
-	TicketData(db)
+	// CountryData(db)
+	// StatusEmployeeData(db)
+	// LuggageTypeData(db)
+	// StatusLuggageData(db)
+	// StatusPlaneData(db)
+	// FlightTypeData(db)
+	// FlightBenefitData(db)
+	// BloodTypeData(db)
+	// EmployeeRoleData(db)
+	// DocumentTypeData(db)
+	// AirportTypeData(db)
+	// BrandData(db)
+	// ModelData(db)
+	// TicketTypeData(db)
+	// PersonData(db)
+	// AirportData(db)
+	// FlightData(db)
+	// PlaneData(db)
+	// Employee_EmployeeRoleData(db)
+	// Employee_StatusEmployeeData(db)
+	// FlightBenefit_FlightTypeData(db)
+	// FlightScheduleData(db)
+	// LuggageData(db)
+	// TicketData(db)
+	MoreData(db)
 }
 
 func GenerateIndexCode() {
@@ -662,6 +664,72 @@ func TicketData(db *gorm.DB) {
 			}
 
 			db.Table("Flight.Ticket").Create(&temp)
+		}
+	}
+}
+
+func MoreData(db *gorm.DB) {
+	var pilots []Employee_EmployeeRole
+	db.Table("Person.Employee_EmployeeRole").Where(&Employee_EmployeeRole{EmployeeRoleID: 6}).Find(&pilots)
+	var countFlights int64
+	db.Table("Flight.Flight").Count(&countFlights)
+
+	var employees []Employee_EmployeeRole
+	db.Table("Person.Employee_EmployeeRole").Find(&employees)
+	var ids []int
+	for _, v := range employees {
+		ids = append(ids, v.EmployeeID)
+	}
+	var persons []Person
+	db.Table("Person.Person").Not(ids).Find(&persons)
+
+	opt := []string{"Economic", "Executive", "First Class"}
+
+	// for i := 0; i < 10000; i++ {
+	// 	flight := gofakeit.Number(1, int(countFlights-int64(1)))
+	// 	t := time.Now().AddDate(-gofakeit.Number(0, 5), -gofakeit.Number(0, 12), -gofakeit.Number(0, 30))
+	// 	num, min := gofakeit.Number(2, 19), gofakeit.Number(0, 60)
+
+	// 	flightTemp := FlightSchedule{
+	// 		DepartureDate: t,
+	// 		PlaneID:       gofakeit.Number(1, 25),
+	// 		Pilot:         pilots[gofakeit.Number(0, len(pilots)-1)].EmployeeID,
+	// 		CoPilot:       pilots[gofakeit.Number(0, len(pilots)-1)].EmployeeID,
+	// 		FlightID:      flight,
+	// 	}
+	// 	t.Add(time.Hour * time.Duration(num-1))
+	// 	t.Add(time.Minute * time.Duration(min))
+	// 	flightTemp.ArrivalDate = t
+	// 	db.Table("Flight.FlightSchedule").Create(&flightTemp)
+	// }
+
+	var Flights []FlightSchedule
+	db.Table("Flight.FlightSchedule").Limit(10000).Order("FlightScheduleID desc").Find(&Flights)
+
+	for _, flight := range Flights {
+		for i := 0; i < 50; i++ {
+			rand := gofakeit.Number(1, 3)
+			Personrand := gofakeit.Number(1, len(persons)-1)
+			ticketTemp := Ticket{
+				FlightID:         flight.FlightID,
+				PersonID:         persons[Personrand].PersonID,
+				TicketTypeID:     rand,
+				Cost:             (gofakeit.Number(10, 50) * 9) / 4,
+				FlightScheduleID: flight.FlightScheduleID,
+				SeatPlane:        fmt.Sprintf("%d%s%s", gofakeit.Number(1, 99), gofakeit.RandomString([]string{"A", "B", "C", "D", "E", "F"}), opt[rand-1][:3]),
+			}
+
+			db.Table("Flight.Ticket").Create(&ticketTemp)
+			weight := gofakeit.Number(5, 25)
+			lugga := Luggage{
+				PersonID:         persons[Personrand].PersonID,
+				FlightScheduleID: flight.FlightID,
+				Weight:           weight,
+				Cost:             (weight * 5) / 2,
+				LuggageTypeID:    gofakeit.Number(1, 2),
+				LuggageStatusID:  gofakeit.Number(1, 4),
+			}
+			db.Table("Flight.Luggage").Create(&lugga)
 		}
 	}
 }
