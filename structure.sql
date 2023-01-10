@@ -13,7 +13,8 @@ IF (
       name = 'Person'
   )
 ) BEGIN EXEC ('CREATE SCHEMA [Person] AUTHORIZATION [dbo]')
-END IF (
+END
+IF (
   NOT EXISTS (
     SELECT
       *
@@ -23,7 +24,8 @@ END IF (
       name = 'Flight'
   )
 ) BEGIN EXEC ('CREATE SCHEMA [Flight] AUTHORIZATION [dbo]')
-END IF (
+END
+IF (
   NOT EXISTS (
     SELECT
       *
@@ -34,14 +36,34 @@ END IF (
   )
 ) BEGIN EXEC ('CREATE SCHEMA [Airport] AUTHORIZATION [dbo]')
 END
-
+IF (
+  NOT EXISTS (
+    SELECT
+      *
+    FROM
+      sys.schemas
+    WHERE
+      name = 'Geo'
+  )
+) BEGIN EXEC ('CREATE SCHEMA [Geo] AUTHORIZATION [dbo]')
+END
 -- Statistics
 Alter DATABASE StarAirlines SET auto_create_statistics ON
 GO
 
+CREATE TABLE [Geo].[Continent](
+    ContinentID int identity(1,1) not null,
+	Code char(2) NOT NULL,
+	ContinentName nvarchar(25) NULL,
+	CONSTRAINT PK_Continent_ContinentID PRIMARY KEY CLUSTERED (ContinentID),
+	CONSTRAINT AK_ContinentName UNIQUE(ContinentName),
+	CONSTRAINT AK_Code UNIQUE(Code),
+)
+GO
+
 -- Pais
 create table
-  Flight.Country(
+  Geo.Country(
     CountryID int identity(1, 1) not null,
     ISO2 CHAR(2) not null,
     ISO3 CHAR(3) not null,
@@ -49,10 +71,12 @@ create table
     Latitude NUMERIC(10,8) not null,
     Longitude NUMERIC(11,8) not null,
     CountryName varchar(100) not null,
+    ContinentID int not null,
     CONSTRAINT PK_Country_CountryID PRIMARY KEY CLUSTERED (CountryID),
     CONSTRAINT AK_ISO2 UNIQUE(ISO2),
     CONSTRAINT AK_ISO3 UNIQUE(ISO3),
-    CONSTRAINT AK_CountryName UNIQUE(CountryName)
+    CONSTRAINT AK_CountryName UNIQUE(CountryName),
+    CONSTRAINT FK_Country_Ref_Continent FOREIGN KEY (ContinentID) REFERENCES Geo.Continent (ContinentID) ON DELETE CASCADE ON UPDATE CASCADE,
   );
 
 -- Estado Empleado
@@ -149,7 +173,7 @@ create table
 
 -- Ciudades / Destinos
 create table
-  Flight.Destination(
+  Geo.Destination(
     DestinationID int identity(1, 1) not null,
     CountryID int not null,
     DestinationName varchar(100) not null,
@@ -157,7 +181,7 @@ create table
     Latitude NUMERIC(10,8) null,
     Longitude NUMERIC(11,8) null,
     CONSTRAINT PK_Destination_DestinationID PRIMARY KEY CLUSTERED (DestinationID),
-    CONSTRAINT FK_Destination_Ref_Country FOREIGN KEY (CountryID) REFERENCES Flight.Country (CountryID) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Destination_Ref_Country FOREIGN KEY (CountryID) REFERENCES Geo.Country (CountryID) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT AK_DestinationName UNIQUE(DestinationName)
   );
 
@@ -226,7 +250,7 @@ create table
     Direction varchar(250),
     Email varchar(100) not null,
     CONSTRAINT PK_Person_PersonID PRIMARY KEY CLUSTERED (PersonID),
-    CONSTRAINT FK_Person_Ref_Country FOREIGN KEY (Nationality) REFERENCES Flight.Country (CountryID) ON DELETE NO ACTION ON UPDATE CASCADE,
+    CONSTRAINT FK_Person_Ref_Country FOREIGN KEY (Nationality) REFERENCES Geo.Country (CountryID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Person_Ref_DocumentType FOREIGN KEY (DocumentTypeID) REFERENCES Person.DocumentType (DocumentTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Person_Ref_BloodType FOREIGN KEY (BloodType) REFERENCES Person.BloodType (BloodTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT AK_Document UNIQUE(Document)
@@ -241,7 +265,7 @@ create table
     Direction varchar(250),
     AirportTypeID int not null,
     CONSTRAINT PK_Airport_AirportID PRIMARY KEY CLUSTERED (AirportID),
-    CONSTRAINT FK_Airport_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Flight.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_Airport_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Geo.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Airport_Ref_AirportType FOREIGN KEY (AirportTypeID) REFERENCES Airport.AirportType (AirportTypeID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT AK_AirportName UNIQUE(AirportName)
   );
@@ -259,7 +283,7 @@ create table
     TravelDuration time not null,
     FlightTypeID int not null,
     CONSTRAINT PK_Flight_Ref_FlightID PRIMARY KEY CLUSTERED (FlightID),
-    CONSTRAINT FK_Flight_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Flight.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE CASCADE,
+    CONSTRAINT FK_Flight_Ref_Destination FOREIGN KEY (DestinationID) REFERENCES Geo.Destination (DestinationID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Flight_Ref_Airport FOREIGN KEY (DestinationAirportID) REFERENCES Airport.Airport (AirportID) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT FK_Flight_Ref_FlightType FOREIGN KEY (FlightTypeID) REFERENCES Flight.FlightType (FlightTypeID) ON DELETE NO ACTION ON UPDATE NO ACTION
   );
