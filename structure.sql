@@ -2,6 +2,10 @@ CREATE DATABASE StarAirlines;
 go
 use StarAirlines;
 
+-- Statistics
+Alter DATABASE StarAirlines SET auto_create_statistics ON
+GO
+
 /*  schemas */
 IF (
   NOT EXISTS (
@@ -47,9 +51,7 @@ IF (
   )
 ) BEGIN EXEC ('CREATE SCHEMA [Geo] AUTHORIZATION [dbo]')
 END
--- Statistics
-Alter DATABASE StarAirlines SET auto_create_statistics ON
-GO
+
 
 CREATE TABLE [Geo].[Continent](
     ContinentID int identity(1,1) not null,
