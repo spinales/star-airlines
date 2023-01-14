@@ -68,7 +68,7 @@ GO
 DROP VIEW IF EXISTS Flight.vTicket;
 GO
 CREATE VIEW Flight.vTicket AS
-    SELECT T.TicketID, P.FirstName + ' ' + P.LastName AS Name, P.Document, D.DestinationName AS Destination, C.CountryName AS Country, F.TravelDistance AS Distance,
+    SELECT T.FlightScheduleID, T.TicketID, P.PersonID, P.FirstName + ' ' + P.LastName AS Name, P.Document, D.DestinationName AS Destination, C.CountryName AS Country, F.TravelDistance AS Distance,
            F.TravelDuration AS Duration, TT.TicketTypeName AS TicketType, T.Cost AS Cost, FS.DepartureDate, FS.ArrivalDate, GC.ContinentName
     FROM Flight.Ticket T
     INNER JOIN Flight.Flight F ON T.FlightID = F.FlightID
@@ -120,4 +120,18 @@ CREATE VIEW Flight.vFlightSchedule AS
     INNER JOIN Flight.FlightType FT ON F.FlightTypeID = FT.FlightTypeID
     INNER JOIN Geo.Continent GC ON GC.ContinentID = C.ContinentID
 GO
+
+DROP VIEW IF EXISTS Flight.vLuggage;
+GO
+CREATE VIEW Flight.vLuggage AS
+    SELECT L.LuggageID, L.FlightScheduleID, L.Weight, L.Cost,
+    LT.LuggageTypeName, SL.StatusLuggageName,
+    P.PersonID, P.FirstName + ' ' + P.LastName as Person
+    FROM Flight.Luggage L
+    Inner Join Flight.LuggageType LT on LT.LuggageTypeID = L.LuggageTypeID
+    INNER JOIN Flight.StatusLuggage SL on SL.StatusLuggageID = L.LuggageStatusID
+    INNER JOIN Person.Person P ON P.PersonID = L.PersonID
+GO
+
+
 
