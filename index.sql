@@ -1,67 +1,67 @@
-/*
-Full text search
-    idx_  regular index
-    unq_  UNIQUE
-    ftx_  FULLTEXT
-    gis_  SPATIAL
-*/
--- StarAirlinesFullTextCatalog
-CREATE FULLTEXT CATALOG StarAirlinesFTCat;
-GO
-
-DROP INDEX IF EXISTS UNQ_Person_FirstName ON Person.Person;
-CREATE UNIQUE INDEX UNQ_Person_FirstName ON Person.Person(FirstName);
-DROP INDEX IF EXISTS UNQ_Destination_DestinationName ON [Geo].[Destination];
-CREATE UNIQUE INDEX UNQ_Destination_DestinationName ON [Geo].[Destination](DestinationName);
-DROP INDEX IF EXISTS UNQ_Country_CountryName ON [Geo].[Country];
-CREATE UNIQUE INDEX UNQ_Country_CountryName ON [Geo].[Country](CountryName);
-DROP INDEX IF EXISTS UNQ_Airport_AirportName ON Airport.Airport;
-CREATE UNIQUE INDEX UNQ_Airport_AirportName ON Airport.Airport(AirportName);
-GO
-
--- DROP FULLTEXT INDEX ON Person.Person;
+-- /*
+-- Full text search
+--     idx_  regular index
+--     unq_  UNIQUE
+--     ftx_  FULLTEXT
+--     gis_  SPATIAL
+-- */
+-- -- StarAirlinesFullTextCatalog
+-- CREATE FULLTEXT CATALOG StarAirlinesFTCat;
 -- GO
-CREATE FULLTEXT INDEX ON Person.Person
-(
-        FirstName
-        Language 1033                 --1033 is the LCID for US English
-)
-KEY INDEX UNQ_Person_FirstName ON StarAirlinesFTCat
-WITH CHANGE_TRACKING AUTO
-GO
-
--- DROP FULLTEXT INDEX ON [Geo].[Destination];
+--
+-- DROP INDEX IF EXISTS UNQ_Person_FirstName ON Person.Person;
+-- CREATE UNIQUE INDEX UNQ_Person_FirstName ON Person.Person(FirstName);
+-- DROP INDEX IF EXISTS UNQ_Destination_DestinationName ON [Geo].[Destination];
+-- CREATE UNIQUE INDEX UNQ_Destination_DestinationName ON [Geo].[Destination](DestinationName);
+-- DROP INDEX IF EXISTS UNQ_Country_CountryName ON [Geo].[Country];
+-- CREATE UNIQUE INDEX UNQ_Country_CountryName ON [Geo].[Country](CountryName);
+-- DROP INDEX IF EXISTS UNQ_Airport_AirportName ON Airport.Airport;
+-- CREATE UNIQUE INDEX UNQ_Airport_AirportName ON Airport.Airport(AirportName);
 -- GO
-CREATE FULLTEXT INDEX ON [Geo].[Destination]
-(
-        DestinationName
-        Language 1033                 --1033 is the LCID for US English
-)
-KEY INDEX UNQ_Destination_DestinationName ON StarAirlinesFTCat
-WITH CHANGE_TRACKING AUTO
-GO
-
--- DROP FULLTEXT INDEX ON [Geo].[Country];
+--
+-- -- DROP FULLTEXT INDEX ON Person.Person;
+-- -- GO
+-- CREATE FULLTEXT INDEX ON Person.Person
+-- (
+--         FirstName
+--         Language 1033                 --1033 is the LCID for US English
+-- )
+-- KEY INDEX UNQ_Person_FirstName ON StarAirlinesFTCat
+-- WITH CHANGE_TRACKING AUTO
 -- GO
-CREATE FULLTEXT INDEX ON [Geo].[Country]
-(
-        CountryName
-        Language 1033                 --1033 is the LCID for US English
-)
-KEY INDEX UNQ_Country_CountryName ON StarAirlinesFTCat
-WITH CHANGE_TRACKING AUTO
-GO
-
--- DROP FULLTEXT INDEX ON Airport.Airport;
+--
+-- -- DROP FULLTEXT INDEX ON [Geo].[Destination];
+-- -- GO
+-- CREATE FULLTEXT INDEX ON [Geo].[Destination]
+-- (
+--         DestinationName
+--         Language 1033                 --1033 is the LCID for US English
+-- )
+-- KEY INDEX UNQ_Destination_DestinationName ON StarAirlinesFTCat
+-- WITH CHANGE_TRACKING AUTO
 -- GO
-CREATE FULLTEXT INDEX ON Airport.Airport
-(
-        AirportName
-        Language 1033                 --1033 is the LCID for US English
-)
-KEY INDEX UNQ_Airport_AirportName ON StarAirlinesFTCat
-WITH CHANGE_TRACKING AUTO
-GO
+--
+-- -- DROP FULLTEXT INDEX ON [Geo].[Country];
+-- -- GO
+-- CREATE FULLTEXT INDEX ON [Geo].[Country]
+-- (
+--         CountryName
+--         Language 1033                 --1033 is the LCID for US English
+-- )
+-- KEY INDEX UNQ_Country_CountryName ON StarAirlinesFTCat
+-- WITH CHANGE_TRACKING AUTO
+-- GO
+--
+-- -- DROP FULLTEXT INDEX ON Airport.Airport;
+-- -- GO
+-- CREATE FULLTEXT INDEX ON Airport.Airport
+-- (
+--         AirportName
+--         Language 1033                 --1033 is the LCID for US English
+-- )
+-- KEY INDEX UNQ_Airport_AirportName ON StarAirlinesFTCat
+-- WITH CHANGE_TRACKING AUTO
+-- GO
 
 /*
 NonClustered Index
