@@ -2810,10 +2810,6 @@ AS
 go
 
 
-/*
-Full text search
-*/
-
 DROP PROCEDURE IF EXISTS Person.spSearchPersonByFirstName;
 GO
 CREATE PROCEDURE Person.spSearchPersonByFirstName(
@@ -2839,7 +2835,7 @@ BEGIN
             ,[Direction] = [P].[Direction]
             ,[Email] = [P].[Email]
     FROM Person.Person P
-    WHERE CONTAINS(FirstName, @FirstName);
+    WHERE FirstName LIKE '%'+@FirstName+'%';
     COMMIT TRANSACTION;
 END;
 GO
@@ -2862,7 +2858,7 @@ BEGIN
             ,[Latitude] = [D].[Latitude]
             ,[Longitude] = [D].[Longitude]
     FROM [Flight].[Destination] AS [D]
-    WHERE CONTAINS(DestinationName, @DestinationName);
+    WHERE DestinationName like '%'+@DestinationName+'%';
     COMMIT TRANSACTION;
 END;
 GO
@@ -2886,7 +2882,91 @@ BEGIN
             ,[Longitude] = [C].[Longitude]
             ,[CountryName] = [C].[CountryName]
     FROM [Flight].[Country] AS [C]
-    WHERE CONTAINS(CountryName, @CountryName);
+    WHERE CountryName like '%'+@CountryName+'%';
     COMMIT TRANSACTION;
 END;
 GO
+
+
+/*
+Full text search
+*/
+
+--
+--
+-- DROP PROCEDURE IF EXISTS Person.spSearchPersonByFirstName;
+-- GO
+-- CREATE PROCEDURE Person.spSearchPersonByFirstName(
+--     @FirstName varchar(100)
+-- )
+-- AS
+-- BEGIN
+--     SET NOCOUNT, XACT_ABORT ON;
+--     SET ANSI_NULLS ON;
+--     SET QUOTED_IDENTIFIER OFF;
+--     BEGIN TRANSACTION;
+--     SELECT  [PersonID] = [P].[PersonID]
+--             ,[FirstName] = [P].[FirstName]
+--             ,[LastName] = [P].[LastName]
+--             ,[AdmissionDate] = [P].[AdmissionDate]
+--             ,[Nationality] = [P].[Nationality]
+--             ,[Gender] = [P].[Gender]
+--             ,[Document] = [P].[Document]
+--             ,[DocumentTypeID] = [P].[DocumentTypeID]
+--             ,[PhoneNumber] = [P].[PhoneNumber]
+--             ,[DOB] = [P].[DOB]
+--             ,[BloodType] = [P].[BloodType]
+--             ,[Direction] = [P].[Direction]
+--             ,[Email] = [P].[Email]
+--     FROM Person.Person P
+--     WHERE CONTAINS(FirstName, @FirstName);
+--     COMMIT TRANSACTION;
+-- END;
+-- GO
+
+-- DROP PROCEDURE IF EXISTS Flight.spSearchDestinationByDestinationName;
+-- GO
+-- CREATE PROCEDURE Flight.spSearchDestinationByDestinationName(
+--     @DestinationName varchar(100)
+-- )
+-- AS
+-- BEGIN
+--     SET NOCOUNT, XACT_ABORT ON;
+--     SET ANSI_NULLS ON;
+--     SET QUOTED_IDENTIFIER OFF;
+--     BEGIN TRANSACTION;
+--     SELECT [DestinationID] = [D].[DestinationID]
+--             ,[CountryID] = [D].[CountryID]
+--             ,[DestinationName] = [D].[DestinationName]
+--             ,[Acronym] = [D].[Acronym]
+--             ,[Latitude] = [D].[Latitude]
+--             ,[Longitude] = [D].[Longitude]
+--     FROM [Flight].[Destination] AS [D]
+--     WHERE CONTAINS(DestinationName, @DestinationName);
+--     COMMIT TRANSACTION;
+-- END;
+-- GO
+--
+-- DROP PROCEDURE IF EXISTS Flight.spSearchCountryByCountryName;
+-- GO
+-- CREATE PROCEDURE Flight.spSearchCountryByCountryName(
+--     @CountryName varchar(100)
+-- )
+-- AS
+-- BEGIN
+--     SET NOCOUNT, XACT_ABORT ON;
+--     SET ANSI_NULLS ON;
+--     SET QUOTED_IDENTIFIER OFF;
+--     BEGIN TRANSACTION;
+--     SELECT [CountryID] = [C].[CountryID]
+--             ,[ISO2] = [C].[ISO2]
+--             ,[ISO3] = [C].[ISO3]
+--             ,[CurrencyName] = [C].[CurrencyName]
+--             ,[Latitude] = [C].[Latitude]
+--             ,[Longitude] = [C].[Longitude]
+--             ,[CountryName] = [C].[CountryName]
+--     FROM [Flight].[Country] AS [C]
+--     WHERE CONTAINS(CountryName, @CountryName);
+--     COMMIT TRANSACTION;
+-- END;
+-- GO
