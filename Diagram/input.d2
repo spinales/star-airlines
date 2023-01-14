@@ -1,12 +1,12 @@
 Airport.Airport.AirportTypeID -> Airport.AirportType.AirportTypeID
-Airport.Airport.DestinationID -> Flight.Destination.DestinationID
+Airport.Airport.DestinationID -> Geo.Destination.DestinationID
 Airport.Model.BrandID -> Airport.Brand.BrandID
 Airport.Plane.BelongingAirport -> Airport.Airport.AirportID
 Airport.Plane.ModelID -> Airport.Model.ModelID
 Airport.Plane.StatusPlaneID -> Airport.StatusPlane.StatusPlaneID
-Flight.Destination.CountryID -> Flight.Country.CountryID
+Flight.Destination.CountryID -> Geo.Country.CountryID
 Flight.Flight.DestinationAirportID -> Airport.Airport.AirportID
-Flight.Flight.DestinationID -> Flight.Destination.DestinationID
+Flight.Flight.DestinationID -> Geo.Destination.DestinationID
 Flight.Flight.FlightTypeID -> Flight.FlightType.FlightTypeID
 Flight.FlightBenefit_FlightType.FlightBenefitID -> Flight.FlightBenefit.FlightBenefitID
 Flight.FlightBenefit_FlightType.FlightTypeID -> Flight.FlightType.FlightTypeID
@@ -26,24 +26,19 @@ Person.Employee_EmployeeRole.EmployeeRoleID -> Person.EmployeeRole.EmployeeRoleI
 Person.Employee_EmployeeRole.EmployeeID -> Person.Person.PersonID
 Person.Employee_StatusEmployee.EmployeeID -> Person.Person.PersonID
 Person.Employee_StatusEmployee.StatusEmployeeID -> Person.StatusEmployee.StatusEmployeeID
-Person.Person.Nationality -> Flight.Country.CountryID
+Person.Person.Nationality -> Geo.Country.CountryID
 Person.Person.BloodType -> Person.BloodType.BloodTypeID
 Person.Person.DocumentTypeID -> Person.DocumentType.DocumentTypeID
+Geo.Country.CountryID -> Geo.Continent.ContinentID
 
+Geo: {
+	Continent: {
+		shape: sql_table 
+		ContinentID: int {constraint: primary_key}
+		Code: char(2) {constraint: unique}
+		ContinentName: nvarchar(25) {constraint: unique}
+	}
 
-Flight: {
-
-    Flight: {
-    	shape: sql_table      
-		FlightID: int {constraint: primary_key}
-		DestinationID: int {constraint: foreign_key}
-		DestinationAirportID: int {constraint: foreign_key}
-		TravelDistance: int 
-		FlightCost: int
-		TravelDuration: time
-		FlightTypeID: int {constraint: foreign_key}
-  	}
-	
 	Country: {
 		shape: sql_table      
 		CountryID: int {constraint: primary_key}
@@ -63,6 +58,20 @@ Flight: {
 		Latitude: NUMERIC(10,8)
 		Longitude: NUMERIC(11,8)
 	}
+}
+
+Flight: {
+    Flight: {
+    	shape: sql_table      
+		FlightID: int {constraint: primary_key}
+		DestinationID: int {constraint: foreign_key}
+		DestinationAirportID: int {constraint: foreign_key}
+		TravelDistance: int 
+		FlightCost: int
+		TravelDuration: time
+		FlightTypeID: int {constraint: foreign_key}
+  	}
+	
 	FlightBenefit: {
 		shape: sql_table      
 		FlightBenefitID: int {constraint: primary_key}

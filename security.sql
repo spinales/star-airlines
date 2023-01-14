@@ -5,6 +5,8 @@ DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Flight TO [public];
 GO
 DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Airport TO [public];
 GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Geo TO [public];
+GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchDestinationByDestinationName
     TO [public];
@@ -60,6 +62,8 @@ GO
 DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Flight TO [sales_person];
 GO
 DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Airport TO [sales_person];
+GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Geo TO [sales_person];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spAddLuggage
@@ -171,6 +175,15 @@ GO
 basic_reader
 */
 CREATE ROLE basic_reader AUTHORIZATION db_owner;
+GO
+
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Person TO [basic_reader];
+GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Flight TO [basic_reader];
+GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Airport TO [basic_reader];
+GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Geo TO [basic_reader];
 GO
 
 GRANT EXECUTE ON OBJECT:: Flight.spSearchDestinationByDestinationName
@@ -305,6 +318,8 @@ DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Flight TO [hr];
 GO
 DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Airport TO [hr];
 GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Geo TO [hr];
+GO
 
 GRANT EXECUTE ON OBJECT:: Person.spAddPerson
     TO  [hr];
@@ -434,6 +449,8 @@ DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Flight TO [technician];
 GO
 DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Airport TO [technician];
 GO
+DENY SELECT,DELETE,UPDATE,INSERT ON SCHEMA :: Geo TO [technician];
+GO
 
 GRANT EXECUTE ON OBJECT:: Person.spSearchAllPersons
     TO  [technician];
@@ -561,6 +578,8 @@ GO
 DENY DELETE ON SCHEMA :: Flight TO [semi_owner];
 GO
 DENY DELETE ON SCHEMA :: Airport TO [semi_owner];
+GO
+DENY DELETE ON SCHEMA :: Geo TO [semi_owner];
 GO
 
 /*
