@@ -2970,3 +2970,4 @@ Full text search
 --     COMMIT TRANSACTION;
 -- END;
 -- GO
+

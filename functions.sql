@@ -72,7 +72,7 @@ GO
 
 DROP function IF EXISTS Flight.ufnGetAllEmployees;
 GO
-CREATE FUNCTION Flight.ufnGetAllEmployees ()
+CREATE FUNCTION Flight.ufnGetAllEmployees()
 RETURNS TABLE
 AS
 RETURN (
@@ -177,3 +177,4 @@ BEGIN
     RETURN @Result;
 END;
 GO
+

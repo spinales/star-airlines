@@ -133,5 +133,3 @@ CREATE VIEW Flight.vLuggage AS
     INNER JOIN Person.Person P ON P.PersonID = L.PersonID
 GO
 
-
-
