@@ -585,56 +585,75 @@ GO
 /*
 usuarios
 */
+IF SUSER_ID('austinBrooks') IS NULL
 CREATE LOGIN austinBrooks
     WITH PASSWORD = '8fdKJl3$nlNv3049jsKK';
-CREATE USER usrAustinBrooks FOR LOGIN austinBrooks;
+IF USER_ID('usrAustinBrooks') IS NULL
+    CREATE USER usrAustinBrooks FOR LOGIN austinBrooks;
 --ALTER ROLE [public] ADD MEMBER usrAustinBrooks;
 GO
 
+IF SUSER_ID('raphaelWatson') IS NULL
 CREATE LOGIN raphaelWatson
     WITH PASSWORD = 'rpEu9pcHmS4EQ6qn';
-CREATE USER usrRaphaelWatson FOR LOGIN raphaelWatson;
+IF USER_ID('usrRaphaelWatson') IS NULL
+    CREATE USER usrRaphaelWatson FOR LOGIN raphaelWatson;
 ALTER ROLE [sales_person] ADD MEMBER usrRaphaelWatson;
 GO
 
+IF SUSER_ID('caseyElliott') IS NULL
 CREATE LOGIN caseyElliott
     WITH PASSWORD = 'WhyatVx3UUwjFmaN';
-CREATE USER usrCaseyElliott FOR LOGIN caseyElliott;
+IF USER_ID('usrCaseyElliott') IS NULL
+    CREATE USER usrCaseyElliott FOR LOGIN caseyElliott;
 ALTER ROLE [basic_reader] ADD MEMBER usrCaseyElliott;
 GO
 
+IF SUSER_ID('stanleyFrank') IS NULL
 CREATE LOGIN stanleyFrank
     WITH PASSWORD = 'M7Fcx8L8FFBPRkR4';
-CREATE USER usrStanleyFrank FOR LOGIN stanleyFrank;
+IF USER_ID('usrStanleyFrank') IS NULL
+    CREATE USER usrStanleyFrank FOR LOGIN stanleyFrank;
 ALTER ROLE [hr] ADD MEMBER usrStanleyFrank;
 GO
 
+IF SUSER_ID('raphaelWard') IS NULL
 CREATE LOGIN raphaelWard
     WITH PASSWORD = 'BSWKmdKhUcydV57W';
-CREATE USER usrRaphaelWard FOR LOGIN raphaelWard;
+IF USER_ID('usrRaphaelWard') IS NULL
+    CREATE USER usrRaphaelWard FOR LOGIN raphaelWard;
 ALTER ROLE [technician] ADD MEMBER usrRaphaelWard;
 GO
 
+IF SUSER_ID('leeWaters') IS NULL
 CREATE LOGIN leeWaters
     WITH PASSWORD = 'qCLJ4hsNc3uS46TP';
-CREATE USER usrLeeWaters FOR LOGIN leeWaters;
+IF USER_ID('usrLeeWaters') IS NULL
+    CREATE USER usrLeeWaters FOR LOGIN leeWaters;
 ALTER ROLE [semi_owner] ADD MEMBER usrLeeWaters;
 GO
 
+IF SUSER_ID('mitchellWilkerson') IS NULL
 CREATE LOGIN mitchellWilkerson
     WITH PASSWORD = 'Hv6uFnJLcaRa83an';
-CREATE USER usrMitchellWilkerson FOR LOGIN mitchellWilkerson;
+IF USER_ID('usrMitchellWilkerson') IS NULL
+    CREATE USER usrMitchellWilkerson FOR LOGIN mitchellWilkerson;
 ALTER ROLE [db_owner] ADD MEMBER usrMitchellWilkerson;
 GO
 
+IF SUSER_ID('hannahWest') IS NULL
 CREATE LOGIN hannahWest
     WITH PASSWORD = 'qWVrSu9kbvzuLLXL';
-CREATE USER usrHannahWest FOR LOGIN hannahWest;
+IF USER_ID('usrHannahWest') IS NULL
+    CREATE USER usrHannahWest FOR LOGIN hannahWest;
 ALTER ROLE [semi_owner] ADD MEMBER usrHannahWest;
 GO
 
+IF SUSER_ID('floraParsons') IS NULL
 CREATE LOGIN floraParsons
     WITH PASSWORD = 'ztzZA6yrfH6YZxpj';
-CREATE USER usrFloraParsons FOR LOGIN floraParsons;
+IF USER_ID('usrFloraParsons') IS NULL
+    CREATE USER usrFloraParsons FOR LOGIN floraParsons;
 ALTER ROLE [semi_owner] ADD MEMBER usrFloraParsons;
 GO
+
