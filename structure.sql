@@ -56,7 +56,7 @@ END
 CREATE TABLE [Geo].[Continent](
     ContinentID int identity(1,1) not null,
 	Code char(2) NOT NULL,
-	ContinentName nvarchar(25) NULL CHECK(patindex('%[^a-zA-Z0-9]%', ContinentName) > 0),
+	ContinentName nvarchar(25) NOT NULL CHECK(ContinentName LIKE '%[^A-9]%'),
 	CONSTRAINT PK_Continent_ContinentID PRIMARY KEY CLUSTERED (ContinentID),
 	CONSTRAINT AK_ContinentName UNIQUE(ContinentName),
 	CONSTRAINT AK_Code UNIQUE(Code),
@@ -69,10 +69,10 @@ create table
     CountryID int identity(1, 1) not null,
     ISO2 CHAR(2) not null,
     ISO3 CHAR(3) not null,
-    CurrencyName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', CurrencyName) > 0),
+    CurrencyName varchar(100) not null CHECK( CurrencyName LIKE '%[^A-9]%'),
     Latitude NUMERIC(10,8) not null,
     Longitude NUMERIC(11,8) not null,
-    CountryName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', CountryName) > 0),
+    CountryName varchar(100) not null CHECK(CountryName LIKE '%[^A-9]%'),
     ContinentID int not null,
     CONSTRAINT PK_Country_CountryID PRIMARY KEY CLUSTERED (CountryID),
     CONSTRAINT AK_ISO2 UNIQUE(ISO2),
@@ -85,7 +85,7 @@ create table
 create table
   Person.StatusEmployee(
     StatusEmployeeID int identity(1, 1) not null,
-    StatusEmployeeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', StatusEmployeeName) > 0),
+    StatusEmployeeName varchar(100) not null CHECK( StatusEmployeeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_StatusEmployee_StatusEmployeeID PRIMARY KEY CLUSTERED (StatusEmployeeID),
     CONSTRAINT AK_StatusEmployeeName UNIQUE(StatusEmployeeName)
@@ -95,7 +95,7 @@ create table
 create table
   Flight.LuggageType(
     LuggageTypeID int identity(1, 1) not null,
-    LuggageTypeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', LuggageTypeName) > 0),
+    LuggageTypeName varchar(100) not null CHECK(LuggageTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     Cost money not null CHECK(Cost >= 0),
     CONSTRAINT PK_LuggageType_LuggageTypeID PRIMARY KEY CLUSTERED (LuggageTypeID),
@@ -106,7 +106,7 @@ create table
 create table
   Flight.StatusLuggage(
     StatusLuggageID int identity(1, 1) not null,
-    StatusLuggageName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', StatusLuggageName) > 0),
+    StatusLuggageName varchar(100) not null CHECK( StatusLuggageName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_StatusLuggage_StatusLuggageID PRIMARY KEY CLUSTERED (StatusLuggageID),
     CONSTRAINT AK_StatusLuggageName UNIQUE(StatusLuggageName)
@@ -116,7 +116,7 @@ create table
 create table
   Airport.StatusPlane(
     StatusPlaneID int identity(1, 1) not null,
-    StatusPlaneName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', StatusPlaneName) > 0),
+    StatusPlaneName varchar(100) not null CHECK(StatusPlaneName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_StatusPlane_StatusPlaneID PRIMARY KEY CLUSTERED (StatusPlaneID),
     CONSTRAINT AK_StatusPlaneName UNIQUE(StatusPlaneName)
@@ -126,7 +126,7 @@ create table
 create table
   Flight.FlightType(
     FlightTypeID int identity(1, 1) not null,
-    FlightTypeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', FlightTypeName) > 0),
+    FlightTypeName varchar(100) not null CHECK(FlightTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_FlightType_FlightTypeID PRIMARY KEY CLUSTERED (FlightTypeID),
     CONSTRAINT AK_FlightTypeName UNIQUE(FlightTypeName)
@@ -136,7 +136,7 @@ create table
 create table
   Flight.FlightBenefit(
     FlightBenefitID int identity(1, 1) not null,
-    FlightBenefitName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', FlightBenefitName) > 0),
+    FlightBenefitName varchar(100) not null CHECK(FlightBenefitName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     Cost money not null CHECK(Cost >= 0),
     CONSTRAINT PK_FlightBenefit_FlightBenefitID PRIMARY KEY CLUSTERED (FlightBenefitID),
@@ -147,7 +147,7 @@ create table
 create table
   Person.BloodType(
     BloodTypeID int identity(1, 1) not null,
-    BloodTypeName varchar(4) not null CHECK(patindex('%[^a-zA-Z0-9]%', BloodTypeName) > 0),
+    BloodTypeName varchar(4) not null CHECK(BloodTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_BloodType_BloodTypeID PRIMARY KEY CLUSTERED (BloodTypeID),
     CONSTRAINT AK_BloodTypeName UNIQUE(BloodTypeName)
@@ -157,7 +157,7 @@ create table
 create table
   Person.EmployeeRole(
     EmployeeRoleID int identity(1, 1) not null,
-    EmployeeRoleName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', EmployeeRoleName) > 0),
+    EmployeeRoleName varchar(100) not null CHECK(EmployeeRoleName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_EmployeeRole_EmployeeRoleID PRIMARY KEY CLUSTERED (EmployeeRoleID),
     CONSTRAINT AK_EmployeeRoleName UNIQUE(EmployeeRoleName)
@@ -167,7 +167,7 @@ create table
 create table
   Person.DocumentType(
     DocumentTypeID int identity(1, 1) not null,
-    DocumentTypeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', DocumentTypeName) > 0),
+    DocumentTypeName varchar(100) not null CHECK(DocumentTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_DocumentType_DocumentTypeID PRIMARY KEY CLUSTERED (DocumentTypeID),
     CONSTRAINT AK_DocumentTypeName UNIQUE(DocumentTypeName)
@@ -178,7 +178,7 @@ create table
   Geo.Destination(
     DestinationID int identity(1, 1) not null,
     CountryID int not null,
-    DestinationName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', DestinationName) > 0),
+    DestinationName varchar(100) not null CHECK(DestinationName LIKE '%[^A-9]%'),
     Acronym varchar(4) null,
     Latitude NUMERIC(10,8) null,
     Longitude NUMERIC(11,8) null,
@@ -191,7 +191,7 @@ create table
 create table
   Airport.AirportType(
     AirportTypeID int identity(1, 1) not null,
-    AirportTypeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', AirportTypeName) > 0),
+    AirportTypeName varchar(100) not null CHECK(AirportTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     CONSTRAINT PK_AirportType_AirportTypeID PRIMARY KEY CLUSTERED (AirportTypeID),
     CONSTRAINT AK_AirportTypeName UNIQUE(AirportTypeName)
@@ -201,7 +201,7 @@ create table
 create table
   Airport.Brand(
     BrandID int identity(1, 1) not null,
-    BrandName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', BrandName) > 0),
+    BrandName varchar(100) not null CHECK( BrandName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     Email varchar(100) not null,
     CONSTRAINT PK_Brand_BrandID PRIMARY KEY CLUSTERED (BrandID),
@@ -213,7 +213,7 @@ create table
 create table
   Airport.Model(
     ModelID int identity(1,1) not null,
-    ModelName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', ModelName) > 0),
+    ModelName varchar(100) not null CHECK(ModelName LIKE '%[^A-9]%'),
     Description varchar(250),
     BrandID int not null,
     CONSTRAINT PK_Model_ModelID PRIMARY KEY (ModelID),
@@ -225,7 +225,7 @@ create table
 create table
   Flight.TicketType(
     TicketTypeID int identity(1, 1) not null,
-    TicketTypeName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', TicketTypeName) > 0),
+    TicketTypeName varchar(100) not null CHECK( TicketTypeName LIKE '%[^A-9]%'),
     Description varchar(200) not null,
     Cost money not null CHECK(Cost >= 0),
     FreeWeight int not null CHECK(FreeWeight >= 0),
@@ -239,14 +239,14 @@ create table
 create table
   Person.Person(
     PersonID int identity(1, 1) not null,
-    FirstName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', FirstName) > 0),
-    LastName varchar(100) not null CHECK(patindex('%[^a-zA-Z0-9]%', LastName) > 0),
+    FirstName varchar(100) not null CHECK(FirstName LIKE '%[^A-9]%'),
+    LastName varchar(100) not null CHECK(LastName LIKE '%[^A-9]%' ),
     AdmissionDate date not null DEFAULT GETDATE(),
     Nationality int not null,
     Gender char(1) not null CHECK(Gender in('M','F')),
-    Document varchar(20) not null CHECK(patindex('%[^a-zA-Z0-9]%', Document) > 0),
+    Document varchar(20) not null CHECK( Document LIKE '%[^A-9]%'),
     DocumentTypeID int not null,
-    PhoneNumber varchar(15) not null CHECK(patindex('%[^0-9]%', PhoneNumber) > 0),
+    PhoneNumber varchar(15) not null CHECK( PhoneNumber LIKE '%[^A-9]%'),
     DOB date,
     BloodType int not null,
     Direction varchar(250),
@@ -262,7 +262,7 @@ create table
 create table
   Airport.Airport(
     AirportID int identity(1, 1) not null,
-    AirportName varchar(200) not null CHECK(patindex('%[^a-zA-Z0-9]%', AirportName) > 0),
+    AirportName varchar(200) not null CHECK(AirportName LIKE '%[^A-9]%'),
     DestinationID int not null,
     Direction varchar(250),
     AirportTypeID int not null,
@@ -298,7 +298,7 @@ create table
     SeatingCapacity int not null CHECK(SeatingCapacity >= 0),
     StatusPlaneID int not null,
     AdmissionDate date not null DEFAULT GETDATE(),
-    RetirementDate date CHECK(RetirementDate > AdmissionDate),
+    RetirementDate date,
     BelongingAirport int,
     -- AirportID
     CONSTRAINT PK_Plane_PlaneID PRIMARY KEY CLUSTERED (PlaneID),
@@ -312,7 +312,7 @@ create table
   Flight.FlightSchedule(
     FlightScheduleID int identity(1, 1) not null,
     DepartureDate datetime not null DEFAULT GETDATE(),
-    ArrivalDate datetime not null CHECK(ArrivalDate > DepartureDate),
+    ArrivalDate datetime null,
     PlaneID int not null,
     Pilot int not null,
     -- EmplooyeeID
@@ -352,7 +352,7 @@ create table
     TicketTypeID int not null,
     Cost money not null CHECK(Cost >= 0),
     FlightScheduleID int not null,
-    SeatPlane varchar(7) not null CHECK(SeatPlane like '[0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z]'),
+    SeatPlane varchar(7) not null CHECK(SeatPlane like '%[^A-9]%'),
     CONSTRAINT PK_Ticket_TicketID PRIMARY KEY CLUSTERED (TicketID),
     CONSTRAINT FK_Ticket_Ref_Person FOREIGN KEY (PersonID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Ticket_Ref_Flight FOREIGN KEY (FlightID) REFERENCES Flight.Flight (FlightID) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -377,7 +377,7 @@ create table
     EmployeeID int not null,
     EmployeeRoleID int not null,
     StartDate date not null DEFAULT GETDATE(),
-    EndDate date CHECK(EndDate > StartDate),
+    EndDate date,
     Description varchar(100),
     CONSTRAINT FK_Employee_EmployeeRole_Ref_Person FOREIGN KEY (EmployeeID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Employee_EmployeeRole_Ref_EmployeeRole FOREIGN KEY (EmployeeRoleID) REFERENCES Person.EmployeeRole (EmployeeRoleID) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -388,7 +388,7 @@ create table
     EmployeeID int not null,
     StatusEmployeeID int not null,
     StartDate date not null DEFAULT GETDATE(),
-    EndDate date CHECK(EndDate > StartDate),
+    EndDate date,
     Description varchar(100),
     CONSTRAINT FK_Employee_StatusEmployee_Ref_Person FOREIGN KEY (EmployeeID) REFERENCES Person.Person (PersonID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Employee_StatusEmployee_Ref_StatusEmployee FOREIGN KEY (StatusEmployeeID) REFERENCES Person.StatusEmployee (StatusEmployeeID) ON DELETE NO ACTION ON UPDATE NO ACTION
