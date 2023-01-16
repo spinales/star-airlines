@@ -25,9 +25,9 @@ CREATE VIEW Airport.vAirport AS
 GO
 
 --vDestinos
-DROP VIEW IF EXISTS Flight.vDestination;
+DROP VIEW IF EXISTS Geo.vDestination;
 GO
-CREATE VIEW Flight.vDestination AS
+CREATE VIEW Geo.vDestination AS
     SELECT D.Acronym, D.DestinationName AS Destination, C.CountryName AS Country, D.Latitude, D.Longitude,
          C.ISO2, C.ISO3, C.CurrencyName AS Currency,GC.ContinentName
     FROM [Geo].[Destination] D
