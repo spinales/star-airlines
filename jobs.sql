@@ -32,14 +32,14 @@ END
 EXEC msdb.dbo.sp_add_job
     @job_name = N'Weekly Star Airlines Data Backup' ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Weekly Star Airlines Data Backup',
-    @step_name = N'Set database to read only',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Weekly Star Airlines Data Backup',
+--     @step_name = N'Set database to read only',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Weekly Star Airlines Data Backup',
     @step_name = N'Full Database backup',
@@ -51,14 +51,14 @@ EXEC msdb.dbo.sp_add_jobstep
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Weekly Star Airlines Data Backup',
-    @step_name = N'Set database to read write',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Weekly Star Airlines Data Backup',
+--     @step_name = N'Set database to read write',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 IF ( NOT EXISTS(SELECT * FROM msdb.dbo.sysschedules WHERE name = 'RunWeekly'))
     BEGIN EXEC('EXEC msdb.dbo.sp_add_schedule
         @schedule_name = N''RunWeekly'',
@@ -88,14 +88,14 @@ END
 EXEC msdb.dbo.sp_add_job
     @job_name = N'Nightly StarAirlines Diferential Data Backup' ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Nightly StarAirlines Diferential Data Backup',
-    @step_name = N'Set database to read only',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Nightly StarAirlines Diferential Data Backup',
+--     @step_name = N'Set database to read only',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Nightly StarAirlines Diferential Data Backup',
     @step_name = N'Do Diferential backup',
@@ -107,14 +107,14 @@ EXEC msdb.dbo.sp_add_jobstep
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Nightly StarAirlines Diferential Data Backup',
-    @step_name = N'Set database to read write mode',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Nightly StarAirlines Diferential Data Backup',
+--     @step_name = N'Set database to read write mode',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 IF ( NOT EXISTS(SELECT * FROM msdb.dbo.sysschedules WHERE name = 'RunDaily'))
     BEGIN EXEC('EXEC msdb.dbo.sp_add_schedule
         @schedule_name = N''RunDaily'',
@@ -142,14 +142,14 @@ END
 EXEC msdb.dbo.sp_add_job
     @job_name = N'Star Airlines Log Backup' ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Star Airlines Log Backup',
-    @step_name = N'Set database to read only',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Star Airlines Log Backup',
+--     @step_name = N'Set database to read only',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_ONLY',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 EXEC msdb.dbo.sp_add_jobstep
     @job_name = N'Star Airlines Log Backup',
     @step_name = N'Do log backup',
@@ -161,14 +161,14 @@ EXEC msdb.dbo.sp_add_jobstep
     @retry_attempts = 5,
     @retry_interval = 5 ;
 GO
-EXEC msdb.dbo.sp_add_jobstep
-    @job_name = N'Star Airlines Log Backup',
-    @step_name = N'Set database to read write only',
-    @subsystem = N'TSQL',
-    @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
-    @retry_attempts = 5,
-    @retry_interval = 5 ;
-GO
+-- EXEC msdb.dbo.sp_add_jobstep
+--     @job_name = N'Star Airlines Log Backup',
+--     @step_name = N'Set database to read write only',
+--     @subsystem = N'TSQL',
+--     @command = N'ALTER DATABASE StarAirlines SET READ_WRITE',
+--     @retry_attempts = 5,
+--     @retry_interval = 5 ;
+-- GO
 IF ( NOT EXISTS(SELECT * FROM msdb.dbo.sysschedules WHERE name = 'RunEvery15Minutes'))
     BEGIN EXEC('EXEC msdb.dbo.sp_add_schedule
         @schedule_name = N''RunEvery15Minutes'',
