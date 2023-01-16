@@ -1,8 +1,6 @@
 # Star Airlines
-- Structure.sql
-- funcions.sql
-- index.sql
-- stored procedures.sql
-- data.sql
-- views.sql
-- jobs.sql
+To setup database run;
+- `dbscript.sql` for all functionalities
+- `data.sql` for data
+
+Other files is seppareted for the functionalities they do.
