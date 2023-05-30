@@ -2547,7 +2547,8 @@ CREATE PROCEDURE [Flight].[spAddTicket](
     @FlightID int
 , @PersonID int
 , @TicketTypeID int
-, @FlightScheduleID int
+, @FlightScheduleID int,
+@Cost money
 , @SeatPlane varchar(7)
 )
 AS

@@ -20,6 +20,8 @@ DECLARE @flight int;
 SELECT TOP(1) @flight = FlightScheduleID FROM Flight.FlightSchedule ORDER BY FlightScheduleID DESC;
 DECLARE @person int;
 SELECT @person =PersonID from Person.Person WHERE Document = '58772079599';
+EXECUTE Flight.spAddTicket @FlightID = @flight, @PersonID = @person, @TicketTypeID = 2, @FlightScheduleID = @flight, @SeatPlane = '001AEXE';
+
 DECLARE @f int;
 SELECT TOP(1) @f = Flight.FlightID FROM Flight.Flight
 INNER JOIN Flight.FlightSchedule FS on Flight.FlightID = FS.FlightID
@@ -29,4 +31,3 @@ EXECUTE Flight.spAddLuggage @PersonID = @person, @FlightScheduleID = @flight, @W
 -- ticket
 
 
-EXECUTE Flight.spAddTicket @FlightID = @flight, @PersonID = @person, @TicketTypeID = 2, @FlightScheduleID = @flight, @SeatPlane = '001AEXE';
